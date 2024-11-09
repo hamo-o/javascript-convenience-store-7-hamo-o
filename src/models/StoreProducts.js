@@ -8,10 +8,9 @@ class StoreProducts {
   #productBody;
 
   constructor({ header, body }) {
-    this.#products = [];
     // TODO: split 유틸로 빼기
     this.#productHeader = header.split(",");
-    this.#productBody = body;
+    this.#products = this.setStoreProducts(body);
   }
 
   #createProduct(item) {
@@ -20,9 +19,27 @@ class StoreProducts {
     return this.#productHeader.reduce((obj, key, idx) => ({ ...obj, [key]: itemArray[idx] }), {});
   }
 
+  #findProductByName(name) {
+    return this.#products.filter((product) => product.isEqualProduct(name));
+  }
+
+  setStoreProducts(body) {
+    return body.map((item) => new StoreProduct(this.#createProduct(item)));
+  }
+
   getStoreProducts() {
-    this.#products = this.#productBody.map((item) => new StoreProduct(this.#createProduct(item)));
     return this.#products.map((product) => product.getProduct());
+  }
+
+  sellProduct(user) {
+    const storeProducts = this.#findProductByName(user.getProduct().name);
+    storeProducts.forEach((store) => {
+      const count = user.isRemain();
+      if (count) {
+        const last = store.sell(count);
+        user.buy(last);
+      }
+    });
   }
 }
 

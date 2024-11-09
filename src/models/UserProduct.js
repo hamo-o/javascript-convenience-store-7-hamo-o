@@ -6,6 +6,14 @@ class UserProduct extends Product {
       name, quantity, price: 0, promotion: "",
     });
   }
+
+  isRemain() {
+    return this.quantity;
+  }
+
+  buy(last) {
+    this.quantity = last;
+  }
 }
 
 export default UserProduct;

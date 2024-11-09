@@ -1,3 +1,4 @@
+import UserProduct from "../src/models/UserProduct.js";
 import StoreProducts from "../src/models/StoreProducts.js";
 
 describe("StoreProducts 클래스 테스트", () => {
@@ -15,6 +16,27 @@ describe("StoreProducts 클래스 테스트", () => {
         name: "콜라",
         price: 1000,
         quantity: 10,
+        promotion: "탄산2+1",
+      }, {
+        name: "콜라",
+        price: 1000,
+        quantity: 10,
+        promotion: "",
+      }]);
+  });
+
+  test("편의점 판매 메서드(sellProduct)", () => {
+    store.getStoreProducts();
+
+    store.sellProduct(new UserProduct({
+      name: "콜라", quantity: "6", price: 0, promotion: "",
+    }));
+
+    expect(store.getStoreProducts())
+      .toEqual([{
+        name: "콜라",
+        price: 1000,
+        quantity: 4,
         promotion: "탄산2+1",
       }, {
         name: "콜라",
