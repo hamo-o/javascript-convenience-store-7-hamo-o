@@ -1,4 +1,4 @@
-import Product from "./Product";
+import Product from "./Product.js";
 
 class UserProduct extends Product {
   constructor({ name, quantity }) {
