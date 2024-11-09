@@ -11,10 +11,10 @@ class File {
     this.#filePath = path.resolve("public", this.#filename);
   }
 
-  async readFile() {
+  async readFile(callback) {
     try {
       const data = await fs.readFile(this.#filePath, { encoding: "utf8" });
-      const [header, ...body] = data.split("\n");
+      const [header, ...body] = callback(data).split("\n").map(callback);
       return { header, body };
     } catch (error) {
       // TODO: 커스텀 에러 객체 던지기

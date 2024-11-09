@@ -20,7 +20,7 @@ describe("File 클래스 테스트", () => {
   });
 
   test("readFile 메서드", async () => {
-    const result = await file.readFile();
+    const result = await file.readFile((input) => input.trim());
     expect(result).toHaveProperty("header", "name,price,quantity,promotion");
     expect(result).toHaveProperty("body");
   });
@@ -28,7 +28,7 @@ describe("File 클래스 테스트", () => {
   test("writeFile 메서드", async () => {
     await file.writeFile("name,price,quantity,promotion\n햄,2500,10,null");
 
-    const result = await file.readFile();
+    const result = await file.readFile((input) => input.trim());
     expect(result.header).toBe("name,price,quantity,promotion");
     expect(result.body).toEqual(["햄,2500,10,null"]);
   });
