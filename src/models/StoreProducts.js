@@ -5,10 +5,29 @@ class StoreProducts {
 
   #productHeader;
 
-  constructor({ header, body }) {
+  constructor() {
+    this.#products = [];
+    this.#productHeader = [];
+  }
+
+  setStoreProducts({ header, body }) {
     // TODO: split 유틸로 빼기
     this.#productHeader = header.split(",");
-    this.#products = this.setStoreProducts(body);
+    this.#products = body.map((item) => new StoreProduct(this.#createProduct(item)));
+  }
+
+  getStoreProducts() {
+    return this.#products.map((product) => product.getProduct());
+  }
+
+  sellProducts(users, file) {
+    users.forEach((user) => this.#sellProduct(user));
+    const header = this.#productHeader.join(",");
+    const content = this.#products.map(({
+      name, price, quantity, promotion,
+    }) => `${name},${price},${quantity},${promotion}`).join("\n");
+
+    file.writeFile(`${header}\n${content}`);
   }
 
   #createProduct(item) {
@@ -30,24 +49,6 @@ class StoreProducts {
         user.buy(last);
       }
     });
-  }
-
-  setStoreProducts(body) {
-    return body.map((item) => new StoreProduct(this.#createProduct(item)));
-  }
-
-  getStoreProducts() {
-    return this.#products.map((product) => product.getProduct());
-  }
-
-  sellProducts(users, file) {
-    users.forEach((user) => this.#sellProduct(user));
-    const header = this.#productHeader.join(",");
-    const content = this.#products.map(({
-      name, price, quantity, promotion,
-    }) => `${name},${price},${quantity},${promotion}`).join("\n");
-
-    file.writeFile(`${header}\n${content}`);
   }
 }
 

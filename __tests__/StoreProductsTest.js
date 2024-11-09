@@ -23,7 +23,8 @@ describe("StoreProducts 클래스 테스트", () => {
   });
 
   beforeEach(() => {
-    store = new StoreProducts({
+    store = new StoreProducts();
+    store.setStoreProducts({
       header: "name,price,quantity,promotion",
       body: ["콜라,1000,10,탄산2+1", "콜라,1000,10,null"],
     });
@@ -45,8 +46,6 @@ describe("StoreProducts 클래스 테스트", () => {
   });
 
   test("편의점 판매 및 재고 갱신 메서드(sellProducts)", async () => {
-    store.getStoreProducts();
-
     store.sellProducts([
       new UserProduct({
         name: "콜라", quantity: "4", price: 0, promotion: "",
