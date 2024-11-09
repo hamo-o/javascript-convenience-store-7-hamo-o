@@ -1,9 +1,22 @@
+import path from "path";
+import fs from "node:fs/promises";
 import File from "../src/utils/File.js";
 
 describe("File 클래스 테스트", () => {
   let file;
+  const originalFilePath = path.resolve("public", "products.md");
+  const testFilePath = path.resolve("public", "products_test.md");
+
+  beforeAll(async () => {
+    await fs.copyFile(originalFilePath, testFilePath);
+  });
+
   beforeEach(() => {
-    file = new File("products.md");
+    file = new File("products_test.md");
+  });
+
+  afterAll(async () => {
+    await fs.unlink(testFilePath);
   });
 
   test("readFile 메서드", async () => {
