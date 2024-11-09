@@ -3,7 +3,7 @@ import Product from "./Product.js";
 class UserProduct extends Product {
   constructor({ name, quantity }) {
     super({
-      name, quantity, price: 0, promotion: "",
+      name, price: 0, quantity, promotion: "",
     });
   }
 

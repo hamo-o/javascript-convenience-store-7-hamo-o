@@ -12,14 +12,15 @@ class UserProducts {
     this.#cartList = [];
   }
 
-  buyProduct(input, store) {
-    return this.#formatInput(input).map((item) => item.getProduct());
+  buyProduct(input, store, file) {
+    this.#formatInput(input);
+    store.sellProducts(this.#cartList, file);
+    return this.#cartList.map((item) => item.getProduct());
   }
 
   #formatInput(input) {
     // TODO: 입력 유효성 검사
-    const items = input.split(",").map((item) => new UserProduct(this.#formatItem(item)));
-    return items;
+    this.#cartList = input.split(",").map((item) => new UserProduct(this.#formatItem(item)));
   }
 
   #formatItem(item) {
