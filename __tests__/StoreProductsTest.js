@@ -20,7 +20,7 @@ describe("StoreProducts 클래스 테스트", () => {
         name: "콜라",
         price: 1000,
         quantity: 10,
-        promotion: null,
+        promotion: "",
       }]);
   });
 });

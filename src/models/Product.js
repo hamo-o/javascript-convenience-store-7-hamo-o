@@ -28,8 +28,8 @@ class Product {
     return {
       name: this.#name,
       price: this.#price,
-      quantity: this.#quantity,
-      promotion: this.#promotion,
+      quantity: this.#quantity || "재고 없음",
+      promotion: this.#promotion || "",
     };
   }
 }
