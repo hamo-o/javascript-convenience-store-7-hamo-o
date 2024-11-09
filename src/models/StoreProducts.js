@@ -27,7 +27,7 @@ class StoreProducts {
       name, price, quantity, promotion,
     }) => `${name},${price},${quantity},${promotion}`).join("\n");
 
-    file.writeFile(`${header}\n${content}`);
+    file.writeFile(`${header}\n${content}\n`);
   }
 
   #createProduct(item) {
