@@ -5,8 +5,6 @@ class StoreProducts {
 
   #productHeader;
 
-  #productBody;
-
   constructor({ header, body }) {
     // TODO: split 유틸로 빼기
     this.#productHeader = header.split(",");
@@ -23,15 +21,7 @@ class StoreProducts {
     return this.#products.filter((product) => product.isEqualProduct(name));
   }
 
-  setStoreProducts(body) {
-    return body.map((item) => new StoreProduct(this.#createProduct(item)));
-  }
-
-  getStoreProducts() {
-    return this.#products.map((product) => product.getProduct());
-  }
-
-  sellProduct(user) {
+  #sellProduct(user) {
     const storeProducts = this.#findProductByName(user.getProduct().name);
     storeProducts.forEach((store) => {
       const count = user.isRemain();
@@ -40,6 +30,24 @@ class StoreProducts {
         user.buy(last);
       }
     });
+  }
+
+  setStoreProducts(body) {
+    return body.map((item) => new StoreProduct(this.#createProduct(item)));
+  }
+
+  getStoreProducts() {
+    return this.#products.map((product) => product.getProduct());
+  }
+
+  sellProducts(users, file) {
+    users.forEach((user) => this.#sellProduct(user));
+    const header = this.#productHeader.join(",");
+    const content = this.#products.map(({
+      name, price, quantity, promotion,
+    }) => `${name},${price},${quantity},${promotion}`).join("\n");
+
+    file.writeFile(`${header}\n${content}`);
   }
 }
 
