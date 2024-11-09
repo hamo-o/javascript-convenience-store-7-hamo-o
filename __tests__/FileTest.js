@@ -24,4 +24,12 @@ describe("File 클래스 테스트", () => {
     expect(result).toHaveProperty("header", "name,price,quantity,promotion");
     expect(result).toHaveProperty("body");
   });
+
+  test("writeFile 메서드", async () => {
+    await file.writeFile("name,price,quantity,promotion\n햄,2500,10,null");
+
+    const result = await file.readFile();
+    expect(result.header).toBe("name,price,quantity,promotion");
+    expect(result.body).toEqual(["햄,2500,10,null"]);
+  });
 });
