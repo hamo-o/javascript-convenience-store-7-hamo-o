@@ -1,4 +1,4 @@
-import Product from "./Product.js";
+import StoreProduct from "./StoreProduct.js";
 
 class StoreProducts {
   #products;
@@ -21,11 +21,8 @@ class StoreProducts {
   }
 
   getStoreProducts() {
-    this.#products = this.#productBody.map((item) => {
-      const product = new Product(this.#createProduct(item));
-      return product.getProduct();
-    });
-    return this.#products;
+    this.#products = this.#productBody.map((item) => new StoreProduct(this.#createProduct(item)));
+    return this.#products.map((product) => product.getProduct());
   }
 }
 

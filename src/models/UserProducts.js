@@ -1,4 +1,4 @@
-import Product from "./Product";
+import UserProduct from "./UserProduct.js";
 
 class UserProducts {
   #store;
@@ -13,22 +13,19 @@ class UserProducts {
   }
 
   buyProduct(input, store) {
-    return this.#formatInput(input);
+    return this.#formatInput(input).map((item) => item.getProduct());
   }
 
   #formatInput(input) {
     // TODO: 입력 유효성 검사
-    const items = input.split(",").map((item) => {
-      const product = new Product(this.#formatItem(item));
-      return product.getProduct();
-    });
+    const items = input.split(",").map((item) => new UserProduct(this.#formatItem(item)));
     return items;
   }
 
   #formatItem(item) {
     const content = item.replaceAll(this.#REGEXP, "");
     const [name, quantity] = content.split("-");
-    return { name, quantity, price: 0 };
+    return { name, quantity };
   }
 }
 
