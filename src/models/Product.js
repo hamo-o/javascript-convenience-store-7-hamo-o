@@ -1,19 +1,19 @@
 class Product {
-  #name;
+  name;
 
-  #price;
+  price;
 
-  #quantity;
+  quantity;
 
-  #promotion;
+  promotion;
 
   constructor({
     name, price, quantity, promotion,
   }) {
-    this.#name = name;
-    this.#price = +price;
-    this.#quantity = +quantity;
-    this.#promotion = this.#formatPromotion(promotion);
+    this.name = name;
+    this.price = +price;
+    this.quantity = +quantity;
+    this.promotion = this.#formatPromotion(promotion);
   }
 
   // TODO: 입력 검증
@@ -26,10 +26,10 @@ class Product {
 
   getProduct() {
     return {
-      name: this.#name,
-      price: this.#price,
-      quantity: this.#quantity || "재고 없음",
-      promotion: this.#promotion || "",
+      name: this.name,
+      price: this.price,
+      quantity: this.quantity || "재고 없음",
+      promotion: this.promotion || "",
     };
   }
 }

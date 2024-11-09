@@ -1,14 +1,6 @@
 import Product from "./Product";
 
 class StoreProduct extends Product {
-  #name;
-
-  #price;
-
-  #quantity;
-
-  #promotion;
-
   constructor({
     name, price, quantity, promotion,
   }) {
@@ -18,16 +10,16 @@ class StoreProduct extends Product {
   }
 
   isEqualProduct(name) {
-    return this.#name === name;
+    return this.name === name;
   }
 
-  buyWithRemainingReturn(quantity) {
-    const sub = this.#quantity - quantity;
+  sell(quantity) {
+    const sub = this.quantity - quantity;
     if (sub < 0) {
-      this.#quantity = 0;
+      this.quantity = 0;
       return Math.abs(sub);
     }
-    this.#quantity = sub;
+    this.quantity = sub;
     return 0;
   }
 }
