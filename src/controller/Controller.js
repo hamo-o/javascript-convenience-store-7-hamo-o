@@ -1,5 +1,4 @@
 import StoreProducts from "../models/StoreProducts.js";
-import OutputView from "../views/OutputView.js";
 
 class Controller {
   #views;
@@ -9,12 +8,12 @@ class Controller {
   }
 
   async info() {
-    OutputView.printHello();
+    this.#views.outputView.printHello();
 
     const data = await this.#views.inputView.readProducts();
     const products = new StoreProducts(data);
 
-    OutputView.printProducts(products.getStoreProducts());
+    this.#views.outputView.printProducts(products.getStoreProducts());
   }
 }
 

@@ -1,5 +1,6 @@
 import Controller from "./controller/Controller.js";
 import InputView from "./views/InputView.js";
+import OutputView from "./views/OutputView.js";
 
 class App {
   #controller;
@@ -8,6 +9,7 @@ class App {
     this.#controller = new Controller({
       views: {
         inputView: new InputView(),
+        outputView: new OutputView(),
       },
     });
   }
