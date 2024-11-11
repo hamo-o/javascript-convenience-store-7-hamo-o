@@ -15,6 +15,9 @@ class UserProducts {
   buyProduct(input, store, file) {
     this.#formatInput(input);
     store.sellProducts(this.#cartList, file);
+  }
+
+  getCartList() {
     return this.#cartList.map((item) => item.getProduct());
   }
 
