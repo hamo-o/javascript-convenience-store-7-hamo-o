@@ -7,14 +7,11 @@ class StoreProduct {
 
   #promotion;
 
-  #promotionList;
-
   constructor(product, promotions) {
     this.#name = product.name;
     this.#price = +product.price;
     this.#quantity = +product.quantity;
-    this.#promotion = this.#findPromotion(product.promotion);
-    this.#promotionList = promotions;
+    this.#promotion = this.#findPromotion(product.promotion, promotions);
   }
 
   isEqualProduct(name) {
@@ -35,7 +32,7 @@ class StoreProduct {
       name: this.#name,
       price: this.#price,
       quantity: this.#quantity,
-      promotion: this.#promotion,
+      promotion: this.#formatPromotion(this.#promotion) || "null",
     };
   }
 
@@ -52,10 +49,10 @@ class StoreProduct {
     this.#quantity += Number(quantity);
   }
 
-  #findPromotion(promotionName) {
-    if (!this.#promotionList) return promotionName;
+  #findPromotion(promotionName, promotionList) {
+    if (!promotionList) return promotionName;
 
-    const promotion = this.#promotionList.findPromotionByName(promotionName);
+    const promotion = promotionList.findPromotionByName(promotionName);
     return promotion || promotionName;
   }
 
