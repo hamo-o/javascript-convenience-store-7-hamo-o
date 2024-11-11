@@ -1,5 +1,5 @@
 class Store {
-  #userCart;
+  #cartList;
 
   #promotion;
 
@@ -22,8 +22,12 @@ class Store {
     this.#finalPrice = 0;
   }
 
-  setTotalPrice(cartList) {
-    this.#totalPrice = cartList.reduce((acc, item) => acc + item.price * item.quantity, 0);
+  setCartList(cartList) {
+    this.#cartList = cartList;
+  }
+
+  calcTotalPrice() {
+    this.#totalPrice = this.#cartList.reduce((acc, item) => acc + item.price * item.quantity, 0);
     this.#finalPrice = this.#totalPrice;
     return this.#totalPrice;
   }
