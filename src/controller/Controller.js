@@ -26,6 +26,19 @@ class Controller {
     this.#models.store.setCartList(cartList);
   }
 
+  async addFreeProducts() {
+    const items = this.#models.userProducts.calcFreeItems();
+
+    const promises = items.map(async (item) => this.#addFreeProduct(item));
+    await Promise.all(promises);
+  }
+
+  async #addFreeProduct({ name, count }) {
+    const data = await this.#views.inputView.readFreeProduct(name, count);
+    const flag = this.#formatInputToBool(data);
+    if (flag) this.#models.storeProducts.sellFreeProduct({ name, count });
+  }
+
   async membership() {
     const data = await this.#views.inputView.readMembershipDiscount();
     const flag = this.#formatInputToBool(data);

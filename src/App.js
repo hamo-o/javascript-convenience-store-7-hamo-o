@@ -37,6 +37,7 @@ class App {
   async run() {
     await this.#controller.info();
     await this.#controller.buy();
+    await this.#controller.addFreeProducts();
     await this.#controller.membership();
     this.#controller.checkout();
   }

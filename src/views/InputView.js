@@ -26,6 +26,11 @@ class InputView {
     return this.#formatInput(input);
   }
 
+  async readFreeProduct(name, count) {
+    const input = await this.#console.readLineAsync(`\n현재 ${name}은(는) ${count}개를 무료로 더 받을 수 있습니다. 추가하시겠습니까? (Y/N)\n`);
+    return this.#formatInput(input);
+  }
+
   async readMembershipDiscount() {
     const input = await this.#console.readLineAsync("\n멤버십 할인을 받으시겠습니까? (Y/N)\n");
     return this.#formatInput(input);

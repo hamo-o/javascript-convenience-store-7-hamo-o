@@ -36,6 +36,14 @@ class StoreProducts {
     return cartList;
   }
 
+  sellFreeProduct({ name, count }) {
+    // TODO: 프로모션 재고와 일반 재고를 분리하고, 프로모션 재고를 이름 + 프로모션 이름으로 찾아서 처리
+    const storeProducts = this.#findProductByName(name);
+    storeProducts[0].sell(count);
+
+    this.#editProductStock();
+  }
+
   #editProductStock() {
     const header = this.#productHeader.join(",");
     const content = this.#products.map(({

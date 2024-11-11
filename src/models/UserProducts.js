@@ -4,6 +4,8 @@ class UserProducts {
   /** @type Product[] */
   #buyList;
 
+  #cartList;
+
   #REGEXP = /\[|\]/g;
 
   constructor() {
@@ -12,7 +14,23 @@ class UserProducts {
 
   buyProduct(input, storeProducts) {
     this.#formatInput(input);
-    return storeProducts.sellProducts(this.#buyList);
+    this.#cartList = storeProducts.sellProducts(this.#buyList);
+    return this.#cartList;
+  }
+
+  calcFreeItems() {
+    const freeItems = [];
+    this.#cartList.forEach((item) => {
+      const { name, quantity, promotion } = item;
+      const count = this.#calcFreeItem(promotion, quantity);
+      if (count) freeItems.push({ name, count });
+    });
+    return freeItems;
+  }
+
+  #calcFreeItem(promotion, quantity) {
+    if (!promotion || typeof promotion !== "object") return 0;
+    return promotion.countFreeItems(quantity);
   }
 
   #formatInput(input) {
