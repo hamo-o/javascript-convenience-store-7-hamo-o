@@ -30,4 +30,24 @@ describe("상점 클래스 테스트", () => {
     ]);
     expect(store.membershipDiscount()).toBe(3000);
   });
+
+  test("금액 정보 반환", () => {
+    store.setTotalPrice([
+      {
+        name: "콜라", price: 1000, quantity: 8, promotion: "",
+      },
+      {
+        name: "사이다", price: 1000, quantity: 2, promotion: "",
+      },
+    ]);
+
+    store.membershipDiscount();
+
+    expect(store.getPriceInfo()).toEqual({
+      totalPrice: 10000,
+      promotionDiscount: 0,
+      membershipDiscount: 3000,
+      finalPrice: 7000,
+    });
+  });
 });
