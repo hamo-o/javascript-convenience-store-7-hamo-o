@@ -18,6 +18,17 @@ class OutputView {
     this.printNewline();
   }
 
+  printReceipt({
+    totalPrice, promotionDiscount, membershipDiscount, finalPrice,
+  }) {
+    this.#console.print("==============W 편의점================");
+    this.#console.print("====================================");
+    this.#console.print(`총구매액                       ${totalPrice}`);
+    this.#console.print(`행사할인                       -${promotionDiscount}`);
+    this.#console.print(`멤버십할인                     -${membershipDiscount}`);
+    this.#console.print(`내실돈                         ${finalPrice}`);
+  }
+
   printNewline() {
     this.#console.print("");
   }

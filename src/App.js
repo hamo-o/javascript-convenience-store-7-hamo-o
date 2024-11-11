@@ -36,6 +36,7 @@ class App {
     await this.#controller.info();
     await this.#controller.buy();
     await this.#controller.membership();
+    this.#controller.checkout();
   }
 }
 

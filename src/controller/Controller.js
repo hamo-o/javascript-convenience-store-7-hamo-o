@@ -31,6 +31,12 @@ class Controller {
     if (flag) this.#models.store.membershipDiscount();
   }
 
+  checkout() {
+    this.#models.store.calcTotalPrice();
+    const priceInfo = this.#models.store.getPriceInfo();
+    this.#views.outputView.printReceipt(priceInfo);
+  }
+
   #formatInputToBool(input) {
     // TODO: 유효성 검사
     if (input === "Y") return true;
