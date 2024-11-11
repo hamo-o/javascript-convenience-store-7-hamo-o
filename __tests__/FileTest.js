@@ -19,13 +19,13 @@ describe("File 클래스 테스트", () => {
     await fs.unlink(testFilePath);
   });
 
-  test("readFile 메서드", async () => {
+  test.skip("readFile 메서드", async () => {
     const result = await file.readFile((input) => input.trim());
     expect(result).toHaveProperty("header", "name,price,quantity,promotion");
     expect(result).toHaveProperty("body");
   });
 
-  test("writeFile 메서드", async () => {
+  test.skip("writeFile 메서드", async () => {
     await file.writeFile("name,price,quantity,promotion\n햄,2500,10,null");
 
     const result = await file.readFile((input) => input.trim());

@@ -44,6 +44,10 @@ class OutputView {
   printNewline() {
     this.#console.print("");
   }
+
+  printError(message) {
+    this.#console.print(message);
+  }
 }
 
 export default OutputView;

@@ -100,6 +100,7 @@ class StoreProducts {
       selledProducts.push(this.#processSell(products.promotion, user));
     }
     if (user.isRemain()) selledProducts.push(this.#processSell(products.default, user));
+    if (user.isRemain()) throw new Error("[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
     return selledProducts;
   }
 

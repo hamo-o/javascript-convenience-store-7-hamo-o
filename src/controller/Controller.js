@@ -20,10 +20,14 @@ class Controller {
   }
 
   async buy() {
-    const data = await this.#views.inputView.readItem();
-    const cartList = this.#models.userProducts.buyProduct(data, this.#models.storeProducts);
-
-    this.#models.store.setCartList(cartList);
+    try {
+      const data = await this.#views.inputView.readItem();
+      const cartList = this.#models.userProducts.buyProduct(data, this.#models.storeProducts);
+      this.#models.store.setCartList(cartList);
+    } catch (error) {
+      this.#views.outputView.printError(error.message);
+      await this.buy();
+    }
   }
 
   async addFreeProducts() {
