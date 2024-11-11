@@ -25,6 +25,19 @@ class Controller {
     this.#models.userProducts
       .buyProduct(data, this.#models.storeProducts, this.#files.productsFile);
   }
+
+  async membership() {
+    const data = await this.#views.inputView.readMembershipDiscount();
+    const flag = this.#formatInputToBool(data);
+
+    if (flag) this.#models.store.membershipDiscount();
+  }
+
+  #formatInputToBool(input) {
+    // TODO: 유효성 검사
+    if (input === "Y") return true;
+    return false;
+  }
 }
 
 export default Controller;

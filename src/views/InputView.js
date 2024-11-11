@@ -20,6 +20,11 @@ class InputView {
     return this.#formatInput(input);
   }
 
+  async readMembershipDiscount() {
+    const input = await this.#console.readLineAsync("\n멤버십 할인을 받으시겠습니까? (Y/N)\n");
+    return this.#formatInput(input);
+  }
+
   // TODO: this를 쓰지 않는 메서드
   #formatInput(input) {
     return input.trim();

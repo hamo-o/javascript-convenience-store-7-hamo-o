@@ -3,7 +3,9 @@ import InputView from "./views/InputView.js";
 import OutputView from "./views/OutputView.js";
 import StoreProducts from "./models/StoreProducts.js";
 import UserProducts from "./models/UserProducts.js";
+import Store from "./models/Store.js";
 import File from "./utils/File.js";
+import MembershipDiscount from "./models/MembershipDiscount.js";
 
 class App {
   #controller;
@@ -27,6 +29,7 @@ class App {
     return {
       storeProducts: new StoreProducts(),
       userProducts: new UserProducts(),
+      store: new Store(new MembershipDiscount()),
     };
   }
 
@@ -40,6 +43,7 @@ class App {
   async run() {
     await this.#controller.info();
     await this.#controller.buy();
+    await this.#controller.membership();
   }
 }
 
