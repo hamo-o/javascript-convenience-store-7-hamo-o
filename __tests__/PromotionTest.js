@@ -41,4 +41,33 @@ describe("Promotion 클래스 테스트", () => {
       });
     });
   });
+
+  describe("countFreeItems 메서드 테스트", () => {
+    describe("2+1 상품인 경우", () => {
+      test("2개만 구매하려고 하면 1개 증정", () => {
+        expect(promotion.countFreeItems(2)).toBe(1);
+      });
+      test("5개만 구매하려고 하면 1개 증정", () => {
+        expect(promotion.countFreeItems(5)).toBe(1);
+      });
+    });
+
+    describe("1+1 상품인 경우", () => {
+      promotion = new Promotion(
+        {
+          name: "반짝할인",
+          buy: "1",
+          get: "1",
+          startDate: "2024-01-01",
+          endDate: "2024-12-31",
+        },
+      );
+      test("3개만 구매하려고 하면 1개 증정", () => {
+        expect(promotion.countFreeItems(2)).toBe(1);
+      });
+      test("5개만 구매하려고 하면 1개 증정", () => {
+        expect(promotion.countFreeItems(5)).toBe(1);
+      });
+    });
+  });
 });

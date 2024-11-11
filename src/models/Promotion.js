@@ -15,8 +15,8 @@ class Promotion {
     name, buy, get, startDate, endDate,
   }) {
     this.#name = name;
-    this.#buy = buy;
-    this.#get = get;
+    this.#buy = +buy;
+    this.#get = +get;
     this.#startDate = startDate;
     this.#endDate = endDate;
   }
@@ -33,6 +33,15 @@ class Promotion {
 
   isEqaulPromotion(name) {
     return this.#name === name;
+  }
+
+  countFreeItems(buyCount) {
+    const set = (this.#buy + this.#get);
+    const setCount = Math.floor(buyCount / set) + 1;
+    const lastCount = (set * setCount) % buyCount;
+
+    if (lastCount === this.#get) return lastCount;
+    return 0;
   }
 
   getPromotion() {
