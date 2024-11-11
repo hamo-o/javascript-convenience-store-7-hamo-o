@@ -24,10 +24,13 @@ class StoreProducts {
   }
 
   sellProducts(users) {
+    const cartList = [];
     users.forEach((user) => {
-      this.#sellProduct(user);
+      const products = this.#sellProduct(user);
+      cartList.push(...products);
     });
     this.#editProductStock();
+    return cartList;
   }
 
   #editProductStock() {
@@ -51,13 +54,19 @@ class StoreProducts {
 
   #sellProduct(user) {
     const storeProducts = this.#findProductByName(user.getProduct().name);
+    const selledProducts = [];
     storeProducts.forEach((store) => {
       const count = user.isRemain();
-      if (count) {
-        const last = store.sell(count);
-        user.buy(last);
-      }
+      if (count) selledProducts.push(this.#processSell(count, store, user));
     });
+    return selledProducts;
+  }
+
+  #processSell(count, store, user) {
+    const selledProduct = store.sell(count);
+    const remainCount = count - selledProduct.quantity;
+    user.buy(remainCount);
+    return selledProduct;
   }
 }
 

@@ -4,22 +4,15 @@ class UserProducts {
   /** @type Product[] */
   #buyList;
 
-  #cartList;
-
   #REGEXP = /\[|\]/g;
 
   constructor() {
     this.#buyList = [];
-    this.#cartList = [];
   }
 
   buyProduct(input, storeProducts) {
     this.#formatInput(input);
-    storeProducts.sellProducts(this.#buyList);
-  }
-
-  getCartList() {
-    return this.#buyList.map((item) => item.getProduct());
+    return storeProducts.sellProducts(this.#buyList);
   }
 
   #formatInput(input) {

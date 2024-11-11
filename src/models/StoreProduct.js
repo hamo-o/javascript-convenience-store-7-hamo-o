@@ -13,14 +13,23 @@ class StoreProduct extends Product {
     return this.name === name;
   }
 
-  sell(quantity) {
-    const sub = this.quantity - quantity;
-    if (sub < 0) {
+  sell(buyCount) {
+    if (this.quantity < buyCount) {
       this.quantity = 0;
-      return Math.abs(sub);
+      return this.#getSelledProduct(this.quantity);
     }
-    this.quantity = sub;
-    return 0;
+    this.quantity -= buyCount;
+    return this.#getSelledProduct(buyCount);
+  }
+
+  #getSelledProduct(quantity) {
+    const { name, price, promotion } = this.getProduct();
+    return {
+      name,
+      price,
+      quantity,
+      promotion,
+    };
   }
 }
 

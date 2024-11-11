@@ -8,7 +8,7 @@ class UserProduct extends Product {
   }
 
   isRemain() {
-    return this.quantity;
+    return +this.quantity;
   }
 
   buy(last) {

@@ -19,9 +19,8 @@ class Controller {
 
   async buy() {
     const data = await this.#views.inputView.readItem();
-    this.#models.userProducts.buyProduct(data, this.#models.storeProducts);
+    const cartList = this.#models.userProducts.buyProduct(data, this.#models.storeProducts);
 
-    const cartList = this.#models.userProducts.getCartList();
     this.#models.store.setCartList(cartList);
   }
 

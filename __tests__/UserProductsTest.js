@@ -7,7 +7,6 @@ import File from "../src/utils/File.js";
 describe("StoreProducts 클래스 테스트", () => {
   let user;
   let store;
-  let file;
   const originalFilePath = path.resolve("public", "products.md");
   const testFilePath = path.resolve("public", "products_test.md");
 
@@ -20,23 +19,22 @@ describe("StoreProducts 클래스 테스트", () => {
   });
 
   beforeEach(() => {
-    store = new StoreProducts();
+    store = new StoreProducts(new File("products_test.md"));
     store.setStoreProducts({
       header: "name,price,quantity,promotion",
       body: ["콜라,1000,10,탄산2+1", "에너지바,1000,5,null"],
     });
     user = new UserProducts();
-    file = new File("products_test.md");
   });
 
   test("사용자 물품구매 메서드(buyProduct)", () => {
-    user.buyProduct("[콜라-3],[에너지바-5]", store, file);
+    const cartList = user.buyProduct("[콜라-3],[에너지바-5]", store);
 
-    expect(user.getCartList())
+    expect(cartList)
       .toEqual([{
-        name: "콜라", quantity: "재고 없음", price: 0, promotion: "",
+        name: "콜라", quantity: 3, price: 1000, promotion: "탄산2+1",
       }, {
-        name: "에너지바", quantity: "재고 없음", price: 0, promotion: "",
+        name: "에너지바", quantity: 5, price: 1000, promotion: "",
       }]);
   });
 });
