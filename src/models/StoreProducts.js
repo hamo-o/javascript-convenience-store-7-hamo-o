@@ -8,7 +8,7 @@ class StoreProducts {
   #stock;
 
   constructor(stock) {
-    this.#products = [];
+    this.#products = {};
     this.#productHeader = [];
     this.#stock = stock;
   }
@@ -17,13 +17,29 @@ class StoreProducts {
     const { header, body } = products;
     // TODO: split 유틸로 빼기
     this.#productHeader = header.split(",");
-    this.#products = body.map(
-      (item) => new StoreProduct(this.#createProduct(item), promotions),
-    );
+    body.forEach((item) => {
+      const newProduct = this.#createProduct(item);
+      this.setStoreProduct(newProduct, promotions);
+    });
+  }
+
+  setStoreProduct(newProduct, promotions) {
+    const { name, quantity, promotion } = newProduct;
+    const isPromotion = promotion !== "null";
+
+    if (!this.#findProductByName(name)) this.#initProduct(newProduct, promotions);
+
+    if (isPromotion) this.#products[name].promotion = new StoreProduct(newProduct, promotions);
+    else this.#products[name].default.add(quantity);
   }
 
   getStoreProducts() {
-    return this.#products.map((product) => product.getFormattedProduct());
+    const products = [];
+    Object.values(this.#products).forEach((product) => {
+      if (product.promotion) products.push(product.promotion.getFormattedProduct());
+      products.push(product.default.getFormattedProduct());
+    });
+    return products;
   }
 
   sellProducts(users) {
@@ -37,19 +53,33 @@ class StoreProducts {
   }
 
   sellFreeProduct({ name, count }) {
-    // TODO: 프로모션 재고와 일반 재고를 분리하고, 프로모션 재고를 이름 + 프로모션 이름으로 찾아서 처리
     const storeProducts = this.#findProductByName(name);
-    storeProducts[0].sell(count);
+    storeProducts.promotion.sell(count);
 
     this.#editProductStock();
   }
 
+  #getStoreProducts() {
+    const products = [];
+    Object.values(this.#products).forEach((product) => {
+      if (product.promotion) products.push(product.promotion.getProduct());
+      products.push(product.default.getProduct());
+    });
+    return products;
+  }
+
+  #initProduct(newProduct, promotions) {
+    this.#products[newProduct.name] = {
+      promotion: null,
+      default: new StoreProduct({ ...newProduct, quantity: 0, promotion: "null" }, promotions),
+    };
+  }
+
   #editProductStock() {
     const header = this.#productHeader.join(",");
-    const content = this.#products.map(({
+    const content = this.#getStoreProducts().map(({
       name, price, quantity, promotion,
     }) => `${name},${price},${quantity},${promotion}`).join("\n");
-
     this.#stock.writeFile(`${header}\n${content}\n`);
   }
 
@@ -60,21 +90,22 @@ class StoreProducts {
   }
 
   #findProductByName(name) {
-    return this.#products.filter((product) => product.isEqualProduct(name));
+    return this.#products[name];
   }
 
   #sellProduct(user) {
-    const storeProducts = this.#findProductByName(user.getName());
+    const products = this.#findProductByName(user.getName());
     const selledProducts = [];
-    storeProducts.forEach((store) => {
-      const count = user.isRemain();
-      if (count) selledProducts.push(this.#processSell(count, store, user));
-    });
+    if (user.isRemain() && products.promotion) {
+      selledProducts.push(this.#processSell(products.promotion, user));
+    }
+    if (user.isRemain()) selledProducts.push(this.#processSell(products.default, user));
     return selledProducts;
   }
 
-  #processSell(count, store, user) {
-    const selledProduct = store.sell(count);
+  #processSell(storeProduct, user) {
+    const count = user.isRemain();
+    const selledProduct = storeProduct.sell(count);
     const remainCount = count - selledProduct.quantity;
     user.buy(remainCount);
     return selledProduct;

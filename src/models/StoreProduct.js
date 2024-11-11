@@ -1,33 +1,62 @@
-import Product from "./Product.js";
+class StoreProduct {
+  #name;
 
-class StoreProduct extends Product {
-  #product;
+  #price;
+
+  #quantity;
+
+  #promotion;
+
+  #promotionList;
 
   constructor(product, promotions) {
-    super(product, promotions);
-    this.#product = this.getProduct();
+    this.#name = product.name;
+    this.#price = +product.price;
+    this.#quantity = +product.quantity;
+    this.#promotion = this.#findPromotion(product.promotion);
+    this.#promotionList = promotions;
   }
 
   isEqualProduct(name) {
-    return this.name === name;
+    return this.#name === name;
   }
 
   sell(buyCount) {
-    if (this.quantity < buyCount) {
-      this.quantity = 0;
-      return this.#getSelledProduct(this.quantity);
+    if (this.#quantity < buyCount) {
+      this.#quantity = 0;
+      return this.#getSelledProduct(this.#quantity);
     }
-    this.quantity -= buyCount;
+    this.#quantity -= buyCount;
     return this.#getSelledProduct(buyCount);
+  }
+
+  getProduct() {
+    return {
+      name: this.#name,
+      price: this.#price,
+      quantity: this.#quantity,
+      promotion: this.#promotion,
+    };
   }
 
   getFormattedProduct() {
     return {
-      name: this.#product.name,
-      price: `${this.#product.price.toLocaleString()}원`,
-      quantity: this.#formatQuantity(this.#product.quantity),
-      promotion: this.#formatPromotion(this.#product.promotion),
+      name: this.#name,
+      price: `${this.#price.toLocaleString()}원`,
+      quantity: this.#formatQuantity(this.#quantity),
+      promotion: this.#formatPromotion(this.#promotion),
     };
+  }
+
+  add(quantity) {
+    this.#quantity += Number(quantity);
+  }
+
+  #findPromotion(promotionName) {
+    if (!this.#promotionList) return promotionName;
+
+    const promotion = this.#promotionList.findPromotionByName(promotionName);
+    return promotion || promotionName;
   }
 
   #formatQuantity(quantity) {
@@ -42,12 +71,11 @@ class StoreProduct extends Product {
   }
 
   #getSelledProduct(quantity) {
-    const { name, price, promotion } = this.getProduct();
     return {
-      name,
-      price,
+      name: this.#name,
+      price: this.#price,
       quantity,
-      promotion,
+      promotion: this.#promotion,
     };
   }
 }
