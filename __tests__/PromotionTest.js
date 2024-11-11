@@ -62,8 +62,8 @@ describe("Promotion 클래스 테스트", () => {
           endDate: "2024-12-31",
         },
       );
-      test("3개만 구매하려고 하면 1개 증정", () => {
-        expect(promotion.countFreeItems(2)).toBe(1);
+      test("1개만 구매하려고 하면 1개 증정", () => {
+        expect(promotion.countFreeItems(1)).toBe(1);
       });
       test("5개만 구매하려고 하면 1개 증정", () => {
         expect(promotion.countFreeItems(5)).toBe(1);
