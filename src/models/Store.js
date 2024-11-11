@@ -1,4 +1,6 @@
 class Store {
+  #userCart;
+
   #promotion;
 
   #membership;
@@ -17,8 +19,9 @@ class Store {
     this.#membershipDiscount = 0;
   }
 
-  setTotalPrice(price) {
-    this.#totalPrice = price;
+  setTotalPrice(cartList) {
+    this.#totalPrice = cartList.reduce((acc, item) => acc + item.price * item.quantity, 0);
+    return this.#totalPrice;
   }
 
   membershipDiscount() {
