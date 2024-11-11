@@ -20,34 +20,37 @@ class Controller {
   }
 
   async buy() {
-    try {
+    await this.#handleError(async () => {
       const data = await this.#views.inputView.readItem();
       const cartList = this.#models.userProducts.buyProduct(data, this.#models.storeProducts);
       this.#models.store.setCartList(cartList);
-    } catch (error) {
-      this.#views.outputView.printError(error.message);
-      await this.buy();
-    }
+    }, this.buy.bind(this));
   }
 
   async addFreeProducts() {
     const items = this.#models.userProducts.calcFreeItems();
 
-    const promises = items.map(async (item) => this.#addFreeProduct(item));
-    await Promise.all(promises);
+    for (const item of items) {
+      await this.#addFreeProduct(item);
+    }
   }
 
   async #addFreeProduct({ name, count }) {
-    const data = await this.#views.inputView.readFreeProduct(name, count);
-    const flag = this.#formatInputToBool(data);
-    if (flag) this.#models.storeProducts.sellFreeProduct({ name, count });
+    await this.#handleError(async () => {
+      const data = await this.#views.inputView.readFreeProduct(name, count);
+      const flag = this.#formatInputToBool(data);
+
+      if (flag) this.#models.storeProducts.sellFreeProduct({ name, count });
+    }, this.#addFreeProduct.bind(this, { name, count }));
   }
 
   async membership() {
-    const data = await this.#views.inputView.readMembershipDiscount();
-    const flag = this.#formatInputToBool(data);
+    await this.#handleError(async () => {
+      const data = await this.#views.inputView.readMembershipDiscount();
+      const flag = this.#formatInputToBool(data);
 
-    if (flag) this.#models.store.membershipDiscount();
+      if (flag) this.#models.store.membershipDiscount();
+    }, this.membership.bind(this));
   }
 
   checkout() {
@@ -57,8 +60,17 @@ class Controller {
     this.#views.outputView.printReceipt(products, priceInfo);
   }
 
+  async #handleError(callback, errorCallback) {
+    try {
+      await callback();
+    } catch (error) {
+      this.#views.outputView.printError(error.message);
+      if (errorCallback) await errorCallback();
+    }
+  }
+
   #formatInputToBool(input) {
-    // TODO: 유효성 검사
+    if (!(input === "Y" || input === "N")) throw new Error("[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.");
     if (input === "Y") return true;
     return false;
   }
