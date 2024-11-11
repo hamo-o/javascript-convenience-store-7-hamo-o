@@ -32,7 +32,9 @@ class Product {
 
   #findPromotion(promotionName) {
     if (!this.#promotionList) return promotionName;
-    return this.#promotionList.find((promotion) => promotion.isEqaulPromotion(promotionName));
+
+    const promotion = this.#promotionList.findPromotionByName(promotionName);
+    return promotion || promotionName;
   }
 }
 

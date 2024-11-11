@@ -37,7 +37,8 @@ class StoreProduct extends Product {
 
   #formatPromotion(promotion) {
     if (promotion === "null") return "";
-    return promotion;
+    if (typeof promotion === "string") return promotion;
+    return promotion.getPromotion().name;
   }
 
   #getSelledProduct(quantity) {

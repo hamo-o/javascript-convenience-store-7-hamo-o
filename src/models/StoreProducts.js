@@ -7,20 +7,18 @@ class StoreProducts {
 
   #stock;
 
-  #promotions;
-
-  constructor(stock, promotions) {
+  constructor(stock) {
     this.#products = [];
     this.#productHeader = [];
     this.#stock = stock;
-    this.#promotions = promotions;
   }
 
-  setStoreProducts({ header, body }) {
+  setStoreProducts(products, promotions) {
+    const { header, body } = products;
     // TODO: split 유틸로 빼기
     this.#productHeader = header.split(",");
     this.#products = body.map(
-      (item) => new StoreProduct(this.#createProduct(item), this.#promotions),
+      (item) => new StoreProduct(this.#createProduct(item), promotions),
     );
   }
 

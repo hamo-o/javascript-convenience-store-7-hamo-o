@@ -11,8 +11,10 @@ class Controller {
   async info() {
     this.#views.outputView.printHello();
 
-    const data = await this.#views.inputView.readProducts();
-    this.#models.storeProducts.setStoreProducts(data);
+    const products = await this.#views.inputView.readProducts();
+    const promotions = await this.#views.inputView.readPromotions();
+    this.#models.promotions.setPromotions(promotions);
+    this.#models.storeProducts.setStoreProducts(products, this.#models.promotions);
 
     this.#views.outputView.printProducts(this.#models.storeProducts.getStoreProducts());
   }

@@ -6,6 +6,7 @@ import UserProducts from "./models/UserProducts.js";
 import Store from "./models/Store.js";
 import File from "./utils/File.js";
 import MembershipDiscount from "./models/MembershipDiscount.js";
+import Promotions from "./models/Promotions.js";
 
 class App {
   #controller;
@@ -29,6 +30,7 @@ class App {
       storeProducts: new StoreProducts(new File("products.md")),
       userProducts: new UserProducts(),
       store: new Store(new MembershipDiscount()),
+      promotions: new Promotions(),
     };
   }
 
