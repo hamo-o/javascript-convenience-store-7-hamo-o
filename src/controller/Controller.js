@@ -49,12 +49,12 @@ class Controller {
       const data = await this.#views.inputView.readMembershipDiscount();
       const flag = this.#formatInputToBool(data);
 
+      this.#models.store.calcTotalPrice();
       if (flag) this.#models.store.membershipDiscount();
     }, this.membership.bind(this));
   }
 
   checkout() {
-    this.#models.store.calcTotalPrice();
     const products = this.#models.store.getCartList();
     const priceInfo = this.#models.store.getPriceInfo();
     this.#views.outputView.printReceipt(products, priceInfo);
