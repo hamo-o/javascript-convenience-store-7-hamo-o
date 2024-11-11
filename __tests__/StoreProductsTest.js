@@ -31,13 +31,13 @@ describe("StoreProducts 클래스 테스트", () => {
     expect(store.getStoreProducts())
       .toEqual([{
         name: "콜라",
-        price: 1000,
-        quantity: 10,
+        price: "1,000원",
+        quantity: "10개",
         promotion: "탄산2+1",
       }, {
         name: "콜라",
-        price: 1000,
-        quantity: 10,
+        price: "1,000원",
+        quantity: "10개",
         promotion: "",
       }]);
   });

@@ -20,7 +20,7 @@ class StoreProducts {
   }
 
   getStoreProducts() {
-    return this.#products.map((product) => product.getProduct());
+    return this.#products.map((product) => product.getFormattedProduct());
   }
 
   sellProducts(users) {

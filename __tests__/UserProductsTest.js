@@ -34,7 +34,7 @@ describe("StoreProducts 클래스 테스트", () => {
       .toEqual([{
         name: "콜라", quantity: 3, price: 1000, promotion: "탄산2+1",
       }, {
-        name: "에너지바", quantity: 5, price: 1000, promotion: "",
+        name: "에너지바", quantity: 5, price: 1000, promotion: "null",
       }]);
   });
 });

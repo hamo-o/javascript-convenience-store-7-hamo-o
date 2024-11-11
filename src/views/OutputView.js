@@ -13,7 +13,7 @@ class OutputView {
 
   printProducts(products) {
     products.forEach((product) => {
-      this.#console.print(`- ${product.name} ${product.price}원 ${product.quantity}개 ${product.promotion}`);
+      this.#console.print(`- ${product.name} ${product.price} ${product.quantity} ${product.promotion}`);
     });
     this.printNewline();
   }
