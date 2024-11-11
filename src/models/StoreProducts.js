@@ -5,9 +5,12 @@ class StoreProducts {
 
   #productHeader;
 
-  constructor() {
+  #stock;
+
+  constructor(stock) {
     this.#products = [];
     this.#productHeader = [];
+    this.#stock = stock;
   }
 
   setStoreProducts({ header, body }) {
@@ -20,14 +23,20 @@ class StoreProducts {
     return this.#products.map((product) => product.getProduct());
   }
 
-  sellProducts(users, file) {
-    users.forEach((user) => this.#sellProduct(user));
+  sellProducts(users) {
+    users.forEach((user) => {
+      this.#sellProduct(user);
+    });
+    this.#editProductStock();
+  }
+
+  #editProductStock() {
     const header = this.#productHeader.join(",");
     const content = this.#products.map(({
       name, price, quantity, promotion,
     }) => `${name},${price},${quantity},${promotion}`).join("\n");
 
-    file.writeFile(`${header}\n${content}\n`);
+    this.#stock.writeFile(`${header}\n${content}\n`);
   }
 
   #createProduct(item) {

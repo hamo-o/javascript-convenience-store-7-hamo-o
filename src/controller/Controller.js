@@ -3,12 +3,9 @@ class Controller {
 
   #models;
 
-  #files;
-
-  constructor({ views, models, files }) {
+  constructor({ views, models }) {
     this.#views = views;
     this.#models = models;
-    this.#files = files;
   }
 
   async info() {
@@ -22,8 +19,10 @@ class Controller {
 
   async buy() {
     const data = await this.#views.inputView.readItem();
-    this.#models.userProducts
-      .buyProduct(data, this.#models.storeProducts, this.#files.productsFile);
+    this.#models.userProducts.buyProduct(data, this.#models.storeProducts);
+
+    const cartList = this.#models.userProducts.getCartList();
+    this.#models.store.setCartList(cartList);
   }
 
   async membership() {

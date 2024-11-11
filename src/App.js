@@ -14,7 +14,6 @@ class App {
     this.#controller = new Controller({
       views: this.#initViews(),
       models: this.#initModels(),
-      files: this.#initFiles(),
     });
   }
 
@@ -27,16 +26,9 @@ class App {
 
   #initModels() {
     return {
-      storeProducts: new StoreProducts(),
+      storeProducts: new StoreProducts(new File("products.md")),
       userProducts: new UserProducts(),
       store: new Store(new MembershipDiscount()),
-    };
-  }
-
-  #initFiles() {
-    return {
-      productsFile: new File("products.md"),
-      promotionsFile: new File("promotions.md"),
     };
   }
 

@@ -1,29 +1,30 @@
 import UserProduct from "./UserProduct.js";
 
 class UserProducts {
-  #store;
-
   /** @type Product[] */
+  #buyList;
+
   #cartList;
 
   #REGEXP = /\[|\]/g;
 
   constructor() {
+    this.#buyList = [];
     this.#cartList = [];
   }
 
-  buyProduct(input, store, file) {
+  buyProduct(input, storeProducts) {
     this.#formatInput(input);
-    store.sellProducts(this.#cartList, file);
+    storeProducts.sellProducts(this.#buyList);
   }
 
   getCartList() {
-    return this.#cartList.map((item) => item.getProduct());
+    return this.#buyList.map((item) => item.getProduct());
   }
 
   #formatInput(input) {
     // TODO: 입력 유효성 검사
-    this.#cartList = input.split(",").map((item) => new UserProduct(this.#formatItem(item)));
+    this.#buyList = input.split(",").map((item) => new UserProduct(this.#formatItem(item)));
   }
 
   #formatItem(item) {

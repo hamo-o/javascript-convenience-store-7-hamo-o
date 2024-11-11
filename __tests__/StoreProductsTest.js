@@ -14,16 +14,13 @@ describe("StoreProducts 클래스 테스트", () => {
     await fs.copyFile(originalFilePath, testFilePath);
   });
 
-  beforeEach(() => {
-    file = new File("products_test.md");
-  });
-
   afterAll(async () => {
     await fs.unlink(testFilePath);
   });
 
   beforeEach(() => {
-    store = new StoreProducts();
+    file = new File("products_test.md");
+    store = new StoreProducts(file);
     store.setStoreProducts({
       header: "name,price,quantity,promotion",
       body: ["콜라,1000,10,탄산2+1", "콜라,1000,10,null"],
@@ -52,7 +49,7 @@ describe("StoreProducts 클래스 테스트", () => {
       }),
       new UserProduct({
         name: "콜라", quantity: "6", price: 0, promotion: "",
-      })], file);
+      })]);
 
     const result = await file.readFile((input) => input.trim());
     expect(result.header).toEqual("name,price,quantity,promotion");
