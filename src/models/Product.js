@@ -7,13 +7,16 @@ class Product {
 
   promotion;
 
+  #promotionList;
+
   constructor({
     name, price, quantity, promotion,
-  }) {
+  }, promotionList) {
     this.name = name;
     this.price = price;
     this.quantity = quantity;
     this.promotion = promotion;
+    this.#promotionList = promotionList;
   }
 
   // TODO: 입력 검증
@@ -23,8 +26,13 @@ class Product {
       name: this.name,
       price: +this.price,
       quantity: +this.quantity,
-      promotion: this.promotion,
+      promotion: this.#findPromotion(this.promotion),
     };
+  }
+
+  #findPromotion(promotionName) {
+    if (!this.#promotionList) return promotionName;
+    return this.#promotionList.find((promotion) => promotion.isEqaulPromotion(promotionName));
   }
 }
 

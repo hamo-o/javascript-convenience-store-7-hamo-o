@@ -3,12 +3,8 @@ import Product from "./Product.js";
 class StoreProduct extends Product {
   #product;
 
-  constructor({
-    name, price, quantity, promotion,
-  }) {
-    super({
-      name, price, quantity, promotion,
-    });
+  constructor(product, promotions) {
+    super(product, promotions);
     this.#product = this.getProduct();
   }
 

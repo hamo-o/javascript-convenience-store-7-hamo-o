@@ -31,6 +31,10 @@ class Promotion {
     return afterStartDate && beforeEndDate;
   }
 
+  isEqaulPromotion(name) {
+    return this.#name === name;
+  }
+
   getPromotion() {
     return {
       name: this.#name,
