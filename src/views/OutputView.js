@@ -18,11 +18,23 @@ class OutputView {
     this.printNewline();
   }
 
-  printReceipt({
+  printReceipt(products, priceInfo) {
+    this.#console.print("==============W 편의점================");
+    this.#printProducts(products);
+    this.#console.print("====================================");
+    this.#printPriceInfo(priceInfo);
+  }
+
+  #printProducts(products) {
+    this.#console.print("상품명     수량      금액");
+    products.forEach((product) => {
+      this.#console.print(`${product.name}     ${product.quantity}         ${product.price}`);
+    });
+  }
+
+  #printPriceInfo({
     totalPrice, promotionDiscount, membershipDiscount, finalPrice,
   }) {
-    this.#console.print("==============W 편의점================");
-    this.#console.print("====================================");
     this.#console.print(`총구매액                       ${totalPrice}`);
     this.#console.print(`행사할인                       -${promotionDiscount}`);
     this.#console.print(`멤버십할인                     -${membershipDiscount}`);

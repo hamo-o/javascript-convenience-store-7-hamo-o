@@ -38,12 +38,18 @@ class Store {
     return this.#membershipDiscount;
   }
 
+  getCartList() {
+    return this.#cartList.map((item) => ({
+      ...item, price: item.price.toLocaleString(),
+    }));
+  }
+
   getPriceInfo() {
     return {
-      totalPrice: this.#totalPrice,
-      promotionDiscount: this.#promotionDiscount,
-      membershipDiscount: this.#membershipDiscount,
-      finalPrice: this.#finalPrice,
+      totalPrice: this.#totalPrice.toLocaleString(),
+      promotionDiscount: this.#promotionDiscount.toLocaleString(),
+      membershipDiscount: this.#membershipDiscount.toLocaleString(),
+      finalPrice: this.#finalPrice.toLocaleString(),
     };
   }
 }

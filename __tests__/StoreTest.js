@@ -30,10 +30,10 @@ describe("상점 클래스 테스트", () => {
     store.membershipDiscount();
 
     expect(store.getPriceInfo()).toEqual({
-      totalPrice: 10000,
-      promotionDiscount: 0,
-      membershipDiscount: 3000,
-      finalPrice: 7000,
+      totalPrice: "10,000",
+      promotionDiscount: "0",
+      membershipDiscount: "3,000",
+      finalPrice: "7,000",
     });
   });
 });

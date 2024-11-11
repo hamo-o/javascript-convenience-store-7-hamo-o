@@ -48,8 +48,9 @@ class Controller {
 
   checkout() {
     this.#models.store.calcTotalPrice();
+    const products = this.#models.store.getCartList();
     const priceInfo = this.#models.store.getPriceInfo();
-    this.#views.outputView.printReceipt(priceInfo);
+    this.#views.outputView.printReceipt(products, priceInfo);
   }
 
   #formatInputToBool(input) {
