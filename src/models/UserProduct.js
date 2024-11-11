@@ -1,18 +1,23 @@
-import Product from "./Product.js";
+class UserProduct {
+  #name;
 
-class UserProduct extends Product {
-  constructor({ name, quantity }) {
-    super({
-      name, price: 0, quantity, promotion: "",
-    });
+  #buyCount;
+
+  constructor({ name, buyCount }) {
+    this.#name = name;
+    this.#buyCount = buyCount;
   }
 
   isRemain() {
-    return +this.quantity;
+    return +this.#buyCount;
   }
 
   buy(last) {
-    this.quantity = last;
+    this.#buyCount = last;
+  }
+
+  getName() {
+    return this.#name;
   }
 }
 

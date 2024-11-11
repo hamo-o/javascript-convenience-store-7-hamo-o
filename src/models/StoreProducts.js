@@ -64,7 +64,7 @@ class StoreProducts {
   }
 
   #sellProduct(user) {
-    const storeProducts = this.#findProductByName(user.getProduct().name);
+    const storeProducts = this.#findProductByName(user.getName());
     const selledProducts = [];
     storeProducts.forEach((store) => {
       const count = user.isRemain();

@@ -40,8 +40,8 @@ class UserProducts {
 
   #formatItem(item) {
     const content = item.replaceAll(this.#REGEXP, "");
-    const [name, quantity] = content.split("-");
-    return { name, quantity };
+    const [name, buyCount] = content.split("-");
+    return { name, buyCount };
   }
 }
 

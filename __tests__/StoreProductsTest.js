@@ -44,12 +44,8 @@ describe("StoreProducts 클래스 테스트", () => {
 
   test("편의점 판매 및 재고 갱신 메서드(sellProducts)", async () => {
     store.sellProducts([
-      new UserProduct({
-        name: "콜라", quantity: "4", price: 0, promotion: "",
-      }),
-      new UserProduct({
-        name: "콜라", quantity: "6", price: 0, promotion: "",
-      })]);
+      new UserProduct({ name: "콜라", buyCount: "4" }),
+      new UserProduct({ name: "콜라", buyCount: "6" })]);
 
     const result = await file.readFile((input) => input.trim());
     expect(result.header).toEqual("name,price,quantity,promotion");
