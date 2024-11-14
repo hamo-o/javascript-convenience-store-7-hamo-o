@@ -61,6 +61,13 @@ class Controller {
     this.#views.outputView.printReceipt(products, priceInfo);
   }
 
+  async checkRestart() {
+    await this.#handleError(async () => {
+      const data = await this.#views.inputView.readRestart();
+      return this.#formatInputToBool(data);
+    }, this.checkRestart.bind(this));
+  }
+
   async #handleError(callback, errorCallback) {
     try {
       await callback();

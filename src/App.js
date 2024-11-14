@@ -40,6 +40,12 @@ class App {
     await this.#controller.addFreeProducts();
     await this.#controller.membership();
     this.#controller.checkout();
+    await this.restart();
+  }
+
+  async restart() {
+    const flag = await this.#controller.checkRestart();
+    if (flag) await this.run();
   }
 }
 

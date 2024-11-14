@@ -36,6 +36,11 @@ class InputView {
     return this.#formatInput(input);
   }
 
+  async readRestart() {
+    const input = await this.#console.readLineAsync("\n감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)\n");
+    return this.#formatInput(input);
+  }
+
   // TODO: this를 쓰지 않는 메서드
   #formatInput(input) {
     return input.trim();
