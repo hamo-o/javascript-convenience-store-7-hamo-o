@@ -21,12 +21,12 @@ describe("상점 클래스 테스트", () => {
   });
 
   test("멤버십 할인 적용", () => {
-    store.calcTotalPrice();
+    store.checkMembership();
     expect(store.membershipDiscount()).toBe(3000);
   });
 
   test("금액 정보 반환", () => {
-    store.calcTotalPrice();
+    store.checkMembership();
     store.membershipDiscount();
 
     expect(store.getPriceInfo()).toEqual({

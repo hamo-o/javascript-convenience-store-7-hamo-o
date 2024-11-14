@@ -32,8 +32,13 @@ class Store {
     return this.#totalPrice;
   }
 
-  membershipDiscount() {
+  checkMembership() {
+    this.calcTotalPrice();
     this.#membershipDiscount = this.#membership.getDiscountPrice(this.#totalPrice);
+    return this.#membershipDiscount;
+  }
+
+  membershipDiscount() {
     this.#finalPrice -= this.#membershipDiscount;
     return this.#membershipDiscount;
   }

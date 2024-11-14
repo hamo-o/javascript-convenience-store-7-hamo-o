@@ -45,11 +45,12 @@ class Controller {
   }
 
   async membership() {
+    const isValidMembership = this.#models.store.checkMembership();
+    if (!isValidMembership) return;
+
     await this.#handleError(async () => {
       const data = await this.#views.inputView.readMembershipDiscount();
       const flag = this.#formatInputToBool(data);
-
-      this.#models.store.calcTotalPrice();
       if (flag) this.#models.store.membershipDiscount();
     }, this.membership.bind(this));
   }
