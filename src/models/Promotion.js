@@ -41,7 +41,7 @@ class Promotion {
     const lastCount = (set * setCount) % buyCount;
 
     if (lastCount === this.#get) return lastCount;
-    if (buyCount === this.#get) return this.#get;
+    if (buyCount === this.#buy) return this.#get;
     return 0;
   }
 
