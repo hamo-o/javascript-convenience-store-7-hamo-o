@@ -35,7 +35,10 @@ class UserProducts {
 
   #formatInput(input) {
     // TODO: 입력 유효성 검사
-    this.#buyList = input.split(",").map((item) => new UserProduct(this.#formatItem(item)));
+    this.#buyList = input.split(",").map((item) => {
+      if (!/^\[[a-zA-Z가-힣]+-\d+\]$/.test(item)) throw new Error("[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.\n");
+      return new UserProduct(this.#formatItem(item));
+    });
   }
 
   #formatItem(item) {
