@@ -23,7 +23,7 @@ class Controller {
     await this.#handleError(async () => {
       const data = await this.#views.inputView.readItem();
       const cartList = this.#models.userProducts.buyProduct(data, this.#models.storeProducts);
-      this.#models.store.setCartList(cartList);
+      cartList.forEach((item) => this.#models.store.addToDefaultCartList(item));
     }, this.buy.bind(this));
   }
 
@@ -39,8 +39,10 @@ class Controller {
     await this.#handleError(async () => {
       const data = await this.#views.inputView.readFreeProduct(name, count);
       const flag = this.#formatInputToBool(data);
-
-      if (flag) this.#models.storeProducts.sellFreeProduct({ name, count });
+      if (flag) {
+        const item = this.#models.storeProducts.sellFreeProduct({ name, count });
+        this.#models.store.addToPromotionCartList(item);
+      }
     }, this.#addFreeProduct.bind(this, { name, count }));
   }
 
@@ -56,9 +58,10 @@ class Controller {
   }
 
   checkout() {
-    const products = this.#models.store.getCartList();
+    const defaultProducts = this.#models.store.getDefaultCartList();
+    const promotionProducts = this.#models.store.getPromotionCartList();
     const priceInfo = this.#models.store.getPriceInfo();
-    this.#views.outputView.printReceipt(products, priceInfo);
+    this.#views.outputView.printReceipt(defaultProducts, promotionProducts, priceInfo);
   }
 
   async checkRestart() {

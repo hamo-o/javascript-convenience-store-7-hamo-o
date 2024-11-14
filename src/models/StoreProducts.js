@@ -54,9 +54,10 @@ class StoreProducts {
 
   sellFreeProduct({ name, count }) {
     const storeProducts = this.findProductByName(name);
-    storeProducts.promotion.sell(count);
+    const selledProduct = storeProducts.promotion.sell(count);
 
     this.#editProductStock();
+    return selledProduct;
   }
 
   findProductByName(name) {

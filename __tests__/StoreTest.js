@@ -6,14 +6,14 @@ describe("상점 클래스 테스트", () => {
 
   beforeEach(() => {
     store = new Store(new MembershipDiscount());
-    store.setCartList([
+    [
       {
         name: "콜라", price: 1000, quantity: 8, promotion: "",
       },
       {
         name: "사이다", price: 1000, quantity: 2, promotion: "",
       },
-    ]);
+    ].forEach((item) => store.addToDefaultCartList(item));
   });
 
   test("총구매액은 상품별 가격과 수량을 곱하여 계산한다.", () => {

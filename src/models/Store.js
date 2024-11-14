@@ -1,5 +1,7 @@
 class Store {
-  #cartList;
+  #defaultCartList;
+
+  #promotionCartList;
 
   #promotion;
 
@@ -14,6 +16,8 @@ class Store {
   #finalPrice;
 
   constructor(membership) {
+    this.#defaultCartList = [];
+    this.#promotionCartList = [];
     this.#membership = membership;
 
     this.#totalPrice = 0;
@@ -22,14 +26,27 @@ class Store {
     this.#finalPrice = 0;
   }
 
-  setCartList(cartList) {
-    this.#cartList = cartList;
+  addToDefaultCartList(item) {
+    this.#defaultCartList.push(item);
+  }
+
+  addToPromotionCartList(item) {
+    this.#promotionCartList.push(item);
   }
 
   calcTotalPrice() {
-    this.#totalPrice = this.#cartList.reduce((acc, item) => acc + item.price * item.quantity, 0);
-    this.#finalPrice = this.#totalPrice;
+    this.#finalPrice = this.#sumCartList(this.#defaultCartList);
+    this.#promotionDiscount = this.#sumCartList(this.#promotionCartList);
+
+    this.#totalPrice = this.#finalPrice + this.#promotionDiscount;
     return this.#totalPrice;
+  }
+
+  #sumCartList(list) {
+    return list.reduce(
+      (acc, item) => acc + item.price * item.quantity,
+      0,
+    );
   }
 
   checkMembership() {
@@ -43,8 +60,14 @@ class Store {
     return this.#membershipDiscount;
   }
 
-  getCartList() {
-    return this.#cartList.map((item) => ({
+  getDefaultCartList() {
+    return this.#defaultCartList.map((item) => ({
+      ...item, price: item.price.toLocaleString(),
+    }));
+  }
+
+  getPromotionCartList() {
+    return this.#promotionCartList.map((item) => ({
       ...item, price: item.price.toLocaleString(),
     }));
   }
