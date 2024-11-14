@@ -13,7 +13,7 @@ class UserProducts {
   }
 
   buyProduct(input, storeProducts) {
-    this.#formatInput(input);
+    this.#formatInput(input, storeProducts);
     this.#cartList = storeProducts.sellProducts(this.#buyList);
     return this.#cartList;
   }
@@ -33,11 +33,13 @@ class UserProducts {
     return promotion.countFreeItems(quantity);
   }
 
-  #formatInput(input) {
+  #formatInput(input, storeProducts) {
     // TODO: 입력 유효성 검사
     this.#buyList = input.split(",").map((item) => {
       if (!/^\[[a-zA-Z가-힣]+-\d+\]$/.test(item)) throw new Error("[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.\n");
-      return new UserProduct(this.#formatItem(item));
+      const formattedItem = this.#formatItem(item);
+      if (!storeProducts.findProductByName(formattedItem.name)) throw new Error("[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.\n");
+      return new UserProduct(formattedItem);
     });
   }
 

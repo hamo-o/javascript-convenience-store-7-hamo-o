@@ -27,7 +27,7 @@ class StoreProducts {
     const { name, quantity, promotion } = newProduct;
     const isPromotion = promotion !== "null";
 
-    if (!this.#findProductByName(name)) this.#initProduct(newProduct, promotions);
+    if (!this.findProductByName(name)) this.#initProduct(newProduct, promotions);
 
     if (isPromotion) this.#products[name].promotion = new StoreProduct(newProduct, promotions);
     else this.#products[name].default.add(quantity);
@@ -53,10 +53,14 @@ class StoreProducts {
   }
 
   sellFreeProduct({ name, count }) {
-    const storeProducts = this.#findProductByName(name);
+    const storeProducts = this.findProductByName(name);
     storeProducts.promotion.sell(count);
 
     this.#editProductStock();
+  }
+
+  findProductByName(name) {
+    return this.#products[name];
   }
 
   #getStoreProducts() {
@@ -89,12 +93,8 @@ class StoreProducts {
     return this.#productHeader.reduce((obj, key, idx) => ({ ...obj, [key]: itemArray[idx] }), {});
   }
 
-  #findProductByName(name) {
-    return this.#products[name];
-  }
-
   #sellProduct(user) {
-    const products = this.#findProductByName(user.getName());
+    const products = this.findProductByName(user.getName());
     const selledProducts = [];
     if (user.isRemain() && products.promotion) {
       selledProducts.push(this.#processSell(products.promotion, user));

@@ -157,5 +157,11 @@ describe("편의점", () => {
       expectedErrorMessage:
         "[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.",
     });
+    await runExceptions({
+      inputs: ["[쿠키-12]", "N", "N"],
+      inputsToTerminate: INPUTS_TO_TERMINATE,
+      expectedErrorMessage:
+        "[ERROR] 존재하지 않는 상품입니다. 다시 입력해 주세요.",
+    });
   });
 });
