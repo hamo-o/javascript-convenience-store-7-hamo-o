@@ -18,27 +18,35 @@ class OutputView {
     this.printNewline();
   }
 
-  printReceipt(products, priceInfo) {
+  printReceipt(defaultProducts, promotionProducts, priceInfo) {
     this.#console.print("==============W 편의점================");
-    this.#printProducts(products);
+    this.#printProducts(defaultProducts);
+    this.#console.print("=============증  정===============");
+    this.#printPromotionProducts(promotionProducts);
     this.#console.print("====================================");
     this.#printPriceInfo(priceInfo);
   }
 
   #printProducts(products) {
-    this.#console.print("상품명     수량      금액");
+    this.#console.print("상품명        수량         금액");
     products.forEach((product) => {
-      this.#console.print(`${product.name}     ${product.quantity}         ${product.price}`);
+      this.#console.print(`${product.name}        ${product.quantity}            ${product.price}`);
+    });
+  }
+
+  #printPromotionProducts(products) {
+    products.forEach((product) => {
+      this.#console.print(`${product.name}        ${product.quantity}`);
     });
   }
 
   #printPriceInfo({
-    totalPrice, promotionDiscount, membershipDiscount, finalPrice,
+    totalPrice, promotionDiscount, membershipDiscount, finalPrice, finalCount,
   }) {
-    this.#console.print(`총구매액                       ${totalPrice}`);
-    this.#console.print(`행사할인                       -${promotionDiscount}`);
-    this.#console.print(`멤버십할인                     -${membershipDiscount}`);
-    this.#console.print(`내실돈                         ${finalPrice}`);
+    this.#console.print(`총구매액      ${finalCount}            ${totalPrice}`);
+    this.#console.print(`행사할인                   -${promotionDiscount}`);
+    this.#console.print(`멤버십할인                 -${membershipDiscount}`);
+    this.#console.print(`내실돈                     ${finalPrice}`);
   }
 
   printNewline() {

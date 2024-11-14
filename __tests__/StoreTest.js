@@ -34,6 +34,7 @@ describe("상점 클래스 테스트", () => {
       promotionDiscount: "0",
       membershipDiscount: "3,000",
       finalPrice: "7,000",
+      finalCount: 10,
     });
   });
 });

@@ -3,8 +3,6 @@ class Store {
 
   #promotionCartList;
 
-  #promotion;
-
   #membership;
 
   #totalPrice;
@@ -49,6 +47,14 @@ class Store {
     );
   }
 
+  #sumCartCount(list) {
+    return list.reduce((acc, item) => acc + item.quantity, 0);
+  }
+
+  #calcFinalCount() {
+    return this.#sumCartCount(this.#defaultCartList) + this.#sumCartCount(this.#promotionCartList);
+  }
+
   checkMembership() {
     this.calcTotalPrice();
     this.#membershipDiscount = this.#membership.getDiscountPrice(this.#totalPrice);
@@ -77,6 +83,7 @@ class Store {
       totalPrice: this.#totalPrice.toLocaleString(),
       promotionDiscount: this.#promotionDiscount.toLocaleString(),
       membershipDiscount: this.#membershipDiscount.toLocaleString(),
+      finalCount: this.#calcFinalCount(),
       finalPrice: this.#finalPrice.toLocaleString(),
     };
   }
