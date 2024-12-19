@@ -1,20 +1,23 @@
+import Promotion from "./Promotion.js";
+
 class PromotionDiscount {
-  #name;
+  #promotionList;
 
-  #buy;
+  constructor(promotionList) {
+    this.#promotionList = this.#formatPromotionList(promotionList);
+  }
 
-  #get;
+  #formatPromotionList(promotionList) {
+    const promotions = new Map();
+    promotionList.forEach((promotion) => {
+      const [name, buy, get, startDate, endDate] = promotion.split(",");
+      promotions.set(name, new Promotion(name, buy, get, startDate, endDate));
+    });
+    return promotions;
+  }
 
-  #startDate;
-
-  #endDate;
-
-  constructor(name, buy, get, startDate, endDate) {
-    this.#name = name;
-    this.#buy = buy;
-    this.#get = get;
-    this.#startDate = startDate;
-    this.#endDate = endDate;
+  findPromotionByName(name) {
+    return this.#promotionList.get(name);
   }
 }
 
