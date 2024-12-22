@@ -42,12 +42,14 @@ class Product {
    * @param {number} quantity - 판매할 수량
    * @returns - 판매한 수량
    */
-  sell(quantity) {
+  sell(quantity, customer) {
     if (this.#quantity < quantity) {
       const sellableQuantity = this.#quantity;
       this.#quantity = 0;
+      customer.addBuyList({ name: this.#name, quantity: sellableQuantity, price: this.#price });
       return sellableQuantity;
     }
+    customer.addBuyList({ name: this.#name, quantity, price: this.#price });
     this.#quantity -= quantity;
     return quantity;
   }

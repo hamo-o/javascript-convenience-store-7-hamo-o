@@ -19,6 +19,21 @@ class Customer {
     this.#totalMembershipDiscount = 0;
     this.#totalPriceAfter = 0;
   }
+
+  addBuyList(product) {
+    this.#buyList.push(product);
+  }
+
+  getCusomterInfos() {
+    return {
+      buyList: this.#buyList,
+      getList: this.#getList,
+      totalPriceBefore: this.#totalPriceBefore,
+      totalPromotionDiscount: this.#totalPromotionDiscount,
+      totalMembershipDiscount: this.#totalMembershipDiscount,
+      totalPriceAfter: this.#totalPriceAfter,
+    };
+  }
 }
 
 export default Customer;
