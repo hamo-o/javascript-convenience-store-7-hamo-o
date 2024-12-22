@@ -9,6 +9,7 @@ class App {
 
   async run() {
     await this.#controller.showList();
+    await this.#controller.buy();
   }
 }
 

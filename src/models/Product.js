@@ -32,6 +32,25 @@ class Product {
       promotion: this.#formatPromotionName(),
     };
   }
+
+  isEqual(name) {
+    return this.#name === name;
+  }
+
+  /**
+   *
+   * @param {number} quantity - 판매할 수량
+   * @returns - 판매한 수량
+   */
+  sell(quantity) {
+    if (this.#quantity < quantity) {
+      const sellableQuantity = this.#quantity;
+      this.#quantity = 0;
+      return sellableQuantity;
+    }
+    this.#quantity -= quantity;
+    return quantity;
+  }
 }
 
 export default Product;

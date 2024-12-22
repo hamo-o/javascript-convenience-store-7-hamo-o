@@ -30,6 +30,11 @@ class Controller {
     OutputView.printWelcome();
     OutputView.printProducts(this.#convenienceStore.getStockList());
   }
+
+  async buy() {
+    const itemData = await InputView.readItem();
+    this.#convenienceStore.buyProducts(itemData);
+  }
 }
 
 export default Controller;

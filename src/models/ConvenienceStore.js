@@ -26,5 +26,25 @@ class ConvenienceStore {
   getStockList() {
     return this.#stockList.map((product) => product.getFormattedProduct());
   }
+
+  #formatBuyList(buyList) {
+    return buyList.split(",").map((buy) => {
+      const ITEM_LAST_CHAR = buy.length - 1;
+      if (buy[0] !== "[" || buy[ITEM_LAST_CHAR] !== "]") throw new Error("[ERROR] 올바르지 않은 형식으로 입력했습니다. 다시 입력해 주세요.");
+      const [name, quantity] = buy.slice(1, ITEM_LAST_CHAR).split("-");
+      return { name, quantity: Number(quantity) };
+    });
+  }
+
+  buyProducts(buyList) {
+    const formattedBuyList = this.#formatBuyList(buyList);
+    formattedBuyList.forEach(({ name, quantity }) => {
+      // TODO: 순회 줄이기. 배열 대신 다른 자료구조 변경
+      const filteredProducts = this.#stockList.filter((product) => product.isEqual(name));
+      const finalBuyCount = filteredProducts
+        .reduce((lastBuyCount, cur) => lastBuyCount - cur.sell(lastBuyCount), quantity);
+      if (finalBuyCount) throw new Error("[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
+    });
+  }
 }
 export default ConvenienceStore;
