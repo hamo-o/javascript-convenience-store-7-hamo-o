@@ -76,6 +76,11 @@ class Product {
     this.#quantity -= quantity;
     customer.addBuyList({ name: this.#name, quantity, price: this.#price });
   }
+
+  sellExtra(quantity, customer) {
+    this.#quantity -= quantity;
+    customer.addGetList({ name: this.#name, quantity, price: this.#price });
+  }
 }
 
 export default Product;

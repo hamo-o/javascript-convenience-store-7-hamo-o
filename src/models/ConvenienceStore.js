@@ -62,22 +62,36 @@ class ConvenienceStore {
     if (stock.has("promotion")) {
       const { lastCount, extraCount } = stock.get("promotion").sellPromotion(quantity, this.#customer);
       return { lastCount, extraCount };
-      // stock.get("default").sellDefault(lastCount, this.#customer);
     }
     stock.get("default").sellDefault(quantity, this.#customer);
   }
 
-  buyProducts(buyList, defaultProductCallback, extraCallback) {
+  async #askExtra(extraCallback, name, extraCount) {
+    const response = await extraCallback(name, extraCount);
+    if (this.#validateResponse(response) === "Y") this.#stockList.get(name).get("promotion").sellExtra(extraCount, this.#customer);
+  }
+
+  async #askDefault(defaultProductCallback, name, lastCount) {
+    const response = await defaultProductCallback(name, lastCount);
+    if (this.#validateResponse(response) === "Y") this.#stockList.get(name).get("default").sellDefault(lastCount, this.#customer);
+  }
+
+  async buyProducts(buyList, defaultProductCallback, extraCallback) {
     const formattedBuyList = this.#formatBuyList(buyList);
-    formattedBuyList.forEach((product) => {
-      const { lastCount, extraCount } = this.#buyProduct(product);
-      if (extraCount) extraCallback(product.name, extraCount);
-      else if (lastCount) defaultProductCallback(product.name, lastCount);
-    });
+    for (const product of formattedBuyList) {
+      const result = this.#buyProduct(product);
+      if (result?.extraCount) await this.#askExtra(extraCallback, product.name, result.extraCount);
+      else if (result?.lastCount) await this.#askDefault(defaultProductCallback, product.name, result.lastCount);
+    }
   }
 
   getCustomerInfos() {
     return this.#customer.getCusomterInfos();
+  }
+
+  #validateResponse(response) {
+    if (!/[YN]/.test(response)) throw new Error("[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.");
+    return response;
   }
 }
 export default ConvenienceStore;
