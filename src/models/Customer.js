@@ -28,6 +28,34 @@ class Customer {
     this.#getList.push(product);
   }
 
+  #calcPromotionDiscount() {
+    this.#totalPromotionDiscount = this.#getList.reduce(
+      (acc, { quantity, price }) => acc + quantity * price,
+      0,
+    );
+    return this.#totalPromotionDiscount;
+  }
+
+  #calcTotalPriceBeforeMembership() {
+    const buyPrice = this.#buyList.reduce(
+      (acc, { quantity, price }) => acc + quantity * price,
+      0,
+    );
+    this.#totalPriceBefore = buyPrice + this.#calcPromotionDiscount();
+    return this.#totalPriceBefore;
+  }
+
+  getBeforeMembershipDiscount() {
+    this.#calcTotalPriceBeforeMembership();
+    return this.#totalPriceBefore - this.#totalPromotionDiscount;
+  }
+
+  calcTotalPriceAfterMembership(membershipDiscount) {
+    this.#totalMembershipDiscount = membershipDiscount;
+    const totalDiscount = this.#totalPromotionDiscount + this.#totalMembershipDiscount;
+    this.#totalPriceAfter = this.#totalPriceBefore - totalDiscount;
+  }
+
   getCusomterInfos() {
     return {
       buyList: this.#buyList,

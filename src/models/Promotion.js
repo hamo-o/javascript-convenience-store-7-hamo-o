@@ -42,7 +42,7 @@ class Promotion {
 
     const set = this.#buy + this.#get;
     const setCount = Math.floor(quantity / set);
-    const cost = setCount * this.#buy;
+    const cost = setCount * this.#buy || this.#buy;
     const free = setCount * this.#get;
     const last = quantity % set;
     return this.#getMaxFreeQuantity(cost, free, this.#getExtraFreeQuantity(last));

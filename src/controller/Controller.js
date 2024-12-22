@@ -3,6 +3,8 @@ import OutputView from "../views/OutputView.js";
 import File from "../utils/File.js";
 
 import ConvenienceStore from "../models/ConvenienceStore.js";
+import Customer from "../models/Customer.js";
+import MembershipDiscount from "../models/MembershipDiscount.js";
 
 class Controller {
   #productsFile;
@@ -10,6 +12,8 @@ class Controller {
   #promotionsFile;
 
   #convenienceStore;
+
+  #customer;
 
   constructor() {
     this.#productsFile = new File("products.md");
@@ -19,9 +23,11 @@ class Controller {
   async #prepare() {
     const products = await InputView.fileInput(this.#productsFile);
     const promotions = await InputView.fileInput(this.#promotionsFile);
+    this.#customer = new Customer();
     this.#convenienceStore = new ConvenienceStore(
       products.body,
       promotions.body,
+      this.#customer,
     );
   }
 
@@ -33,11 +39,13 @@ class Controller {
 
   async #buyDefaultProduct(name, quantity) {
     const data = await InputView.readDefaultProduct(name, quantity);
+    OutputView.printNewLine();
     return data;
   }
 
   async #getExtraProduct(name, quantity) {
     const data = await InputView.readExtraProduct(name, quantity);
+    OutputView.printNewLine();
     return data;
   }
 
@@ -46,6 +54,23 @@ class Controller {
     OutputView.printNewLine();
     await this.#convenienceStore
       .buyProducts(itemData, this.#buyDefaultProduct, this.#getExtraProduct);
+  }
+
+  async #getMembership() {
+    const data = await InputView.readMembership();
+    OutputView.printNewLine();
+    return data;
+  }
+
+  async membershipDiscount() {
+    const beforeMembership = this.#customer.getBeforeMembershipDiscount();
+    const membership = new MembershipDiscount(beforeMembership);
+    const membershipDiscount = await membership.discount(this.#getMembership);
+    this.#customer.calcTotalPriceAfterMembership(membershipDiscount);
+  }
+
+  printReceipt() {
+    console.table(this.#customer.getCusomterInfos());
   }
 }
 

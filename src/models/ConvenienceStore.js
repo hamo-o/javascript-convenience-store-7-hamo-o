@@ -1,6 +1,5 @@
 import Product from "./Product.js";
 import PromotionDiscount from "./PromotionDiscount.js";
-import Customer from "./Customer.js";
 
 class ConvenienceStore {
   #stockList;
@@ -9,11 +8,11 @@ class ConvenienceStore {
 
   #customer;
 
-  constructor(products, promotions) {
+  constructor(products, promotions, customer) {
     this.#promotionDiscount = new PromotionDiscount(promotions);
     this.#stockList = new Map();
     this.#formatStockList(products);
-    this.#customer = new Customer();
+    this.#customer = customer;
   }
 
   #initProduct(name, price, quantity, promotion) {

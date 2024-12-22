@@ -45,6 +45,10 @@ class Product {
     return this.#quantity;
   }
 
+  getPrice() {
+    return this.#price;
+  }
+
   #sellPromotionProduct(customer, sellableQuantity, originQuantity) {
     const {
       costCount,

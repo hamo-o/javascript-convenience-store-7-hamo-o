@@ -10,6 +10,8 @@ class App {
   async run() {
     await this.#controller.showList();
     await this.#controller.buy();
+    await this.#controller.membershipDiscount();
+    this.#controller.printReceipt();
   }
 }
 
