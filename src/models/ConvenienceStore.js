@@ -11,20 +11,35 @@ class ConvenienceStore {
 
   constructor(products, promotions) {
     this.#promotionDiscount = new PromotionDiscount(promotions);
-    this.#stockList = this.#formatStockList(products);
+    this.#stockList = new Map();
+    this.#formatStockList(products);
     this.#customer = new Customer();
   }
 
+  #initProduct(name, price, quantity, promotion) {
+    const stock = new Map();
+    if (promotion) {
+      stock.set("promotion", new Product(name, Number(price), Number(quantity), promotion));
+      stock.set("default", new Product(name, Number(price), 0, undefined));
+    } else stock.set("default", new Product(name, Number(price), Number(quantity), promotion));
+    this.#stockList.set(name, stock);
+  }
+
   #formatStockList(products) {
-    return products.map((stock) => {
+    products.forEach((stock) => {
       const [name, price, quantity, promotion] = stock.split(",");
       const formatedPromotion = this.#promotionDiscount.findPromotionByName(promotion);
-      return new Product(name, Number(price), Number(quantity), formatedPromotion);
+
+      if (!this.#stockList.has(name)) this.#initProduct(name, price, quantity, formatedPromotion);
+      else this.#stockList.get(name).get("default").setQuantity(Number(quantity));
     });
   }
 
   getStockList() {
-    return this.#stockList.map((product) => product.getFormattedProduct());
+    return Array.from(this.#stockList)
+      .map(([name, stock]) => Array.from(stock)
+        .map(([tag, product]) => product.getFormattedProduct()))
+      .flat();
   }
 
   #formatBuyList(buyList) {
@@ -36,23 +51,28 @@ class ConvenienceStore {
     });
   }
 
-  #buyProduct({ name, quantity }) {
-    const filteredProducts = this.#stockList.filter((product) => product.isEqual(name));
-    return filteredProducts.reduce(
-      (lastBuyCount, cur) => {
-        if (lastBuyCount === 0) return 0;
-        return lastBuyCount - cur.sell(lastBuyCount, this.#customer);
-      },
-      quantity,
-    );
+  #isValidStock(stock, quantity) {
+    return Array.from(stock)
+      .reduce((acc, [tag, product]) => acc + product.getQuantity(), 0) >= quantity;
   }
 
-  buyProducts(buyList) {
+  #buyProduct({ name, quantity }) {
+    const stock = this.#stockList.get(name);
+    if (!this.#isValidStock(stock, quantity)) throw new Error("[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
+    if (stock.has("promotion")) {
+      const { lastCount, extraCount } = stock.get("promotion").sellPromotion(quantity, this.#customer);
+      return { lastCount, extraCount };
+      // stock.get("default").sellDefault(lastCount, this.#customer);
+    }
+    stock.get("default").sellDefault(quantity, this.#customer);
+  }
+
+  buyProducts(buyList, defaultProductCallback, extraCallback) {
     const formattedBuyList = this.#formatBuyList(buyList);
     formattedBuyList.forEach((product) => {
-      // TODO: 순회 줄이기. 배열 대신 다른 자료구조 변경
-      const finalBuyCount = this.#buyProduct(product);
-      if (finalBuyCount) throw new Error("[ERROR] 재고 수량을 초과하여 구매할 수 없습니다. 다시 입력해 주세요.");
+      const { lastCount, extraCount } = this.#buyProduct(product);
+      if (extraCount) extraCallback(product.name, extraCount);
+      else if (lastCount) defaultProductCallback(product.name, lastCount);
     });
   }
 

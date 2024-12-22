@@ -13,10 +13,10 @@ class Promotion {
 
   constructor(name, buy, get, startDate, endDate) {
     this.#name = name;
-    this.#buy = buy;
-    this.#get = get;
-    this.#startDate = startDate;
-    this.#endDate = endDate;
+    this.#buy = Number(buy);
+    this.#get = Number(get);
+    this.#startDate = new Date(startDate);
+    this.#endDate = new Date(endDate);
   }
 
   getName() {
@@ -26,10 +26,6 @@ class Promotion {
   #isInPromotionDate() {
     const today = MissionUtils.DateTimes.now();
     return today >= this.#startDate && today <= this.#endDate;
-  }
-
-  #canGetPromotion(quantity) {
-    return quantity < this.#buy;
   }
 
   #getExtraFreeQuantity(lastCount) {
@@ -42,14 +38,14 @@ class Promotion {
   }
 
   calcMaxFreeQuantity(quantity) {
-    if (!this.#isInPromotionDate() || !this.#canGetPromotion(quantity)) {
-      return this.#getMaxFreeQuantity(quantity, 0, 0);
-    }
+    if (!this.#isInPromotionDate()) return this.#getMaxFreeQuantity(0, 0, 0);
+
     const set = this.#buy + this.#get;
     const setCount = Math.floor(quantity / set);
+    const cost = setCount * this.#buy;
     const free = setCount * this.#get;
     const last = quantity % set;
-    return this.#getMaxFreeQuantity(quantity - free, free, this.#getExtraFreeQuantity(last));
+    return this.#getMaxFreeQuantity(cost, free, this.#getExtraFreeQuantity(last));
   }
 }
 

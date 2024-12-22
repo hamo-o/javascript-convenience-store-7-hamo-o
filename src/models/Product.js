@@ -14,6 +14,10 @@ class Product {
     this.#promotion = promotion;
   }
 
+  setQuantity(quantity) {
+    this.#quantity = quantity;
+  }
+
   #formatQuantity() {
     if (this.#quantity === 0) return "재고 없음";
     return `${this.#quantity}개`;
@@ -37,21 +41,40 @@ class Product {
     return this.#name === name;
   }
 
+  getQuantity() {
+    return this.#quantity;
+  }
+
+  #sellPromotionProduct(customer, sellableQuantity, originQuantity) {
+    const {
+      costCount,
+      freeCount,
+      extraCount,
+    } = this.#promotion.calcMaxFreeQuantity(sellableQuantity);
+    customer.addBuyList({ name: this.#name, quantity: costCount, price: this.#price });
+    customer.addGetList({ name: this.#name, quantity: freeCount, price: this.#price });
+    return { lastCount: originQuantity - (costCount + freeCount), extraCount };
+  }
+
   /**
    *
    * @param {number} quantity - 판매할 수량
+   * @param {Customer} customer - 구매자
    * @returns - 판매한 수량
    */
-  sell(quantity, customer) {
+  sellPromotion(quantity, customer) {
     if (this.#quantity < quantity) {
       const sellableQuantity = this.#quantity;
       this.#quantity = 0;
-      customer.addBuyList({ name: this.#name, quantity: sellableQuantity, price: this.#price });
-      return sellableQuantity;
+      return this.#sellPromotionProduct(customer, sellableQuantity, quantity);
     }
-    customer.addBuyList({ name: this.#name, quantity, price: this.#price });
     this.#quantity -= quantity;
-    return quantity;
+    return this.#sellPromotionProduct(customer, quantity, quantity);
+  }
+
+  sellDefault(quantity, customer) {
+    this.#quantity -= quantity;
+    customer.addBuyList({ name: this.#name, quantity, price: this.#price });
   }
 }
 

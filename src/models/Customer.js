@@ -24,6 +24,10 @@ class Customer {
     this.#buyList.push(product);
   }
 
+  addGetList(product) {
+    this.#getList.push(product);
+  }
+
   getCusomterInfos() {
     return {
       buyList: this.#buyList,
