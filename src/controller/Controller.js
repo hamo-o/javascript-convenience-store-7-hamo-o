@@ -70,7 +70,7 @@ class Controller {
   }
 
   printReceipt() {
-    console.table(this.#customer.getCusomterInfos());
+    OutputView.printReceipt(this.#customer.getCusomterInfos());
   }
 }
 

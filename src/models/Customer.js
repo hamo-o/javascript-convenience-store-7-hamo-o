@@ -11,42 +11,56 @@ class Customer {
 
   #totalPriceAfter;
 
+  #totalQuantity;
+
   constructor() {
-    this.#buyList = [];
-    this.#getList = [];
+    this.#buyList = new Map();
+    this.#getList = new Map();
+    this.#totalQuantity = 0;
     this.#totalPriceBefore = 0;
     this.#totalPromotionDiscount = 0;
     this.#totalMembershipDiscount = 0;
     this.#totalPriceAfter = 0;
   }
 
-  addBuyList(product) {
-    this.#buyList.push(product);
+  addBuyList({ name, price, quantity }) {
+    if (this.#buyList.has(name)) {
+      this.#buyList.get(name).quantity += quantity;
+      this.#buyList.get(name).price += quantity * price;
+      return;
+    }
+    this.#buyList.set(name, { name, price: price * quantity, quantity });
   }
 
-  addGetList(product) {
-    this.#getList.push(product);
+  addGetList({ name, price, quantity }) {
+    if (this.#getList.has(name)) {
+      this.#getList.get(name).quantity += quantity;
+      this.#getList.get(name).price += quantity * price;
+      return;
+    }
+    this.#getList.set(name, { name, price: price * quantity, quantity });
   }
 
   #calcPromotionDiscount() {
-    this.#totalPromotionDiscount = this.#getList.reduce(
-      (acc, { quantity, price }) => acc + quantity * price,
+    return Array.from(this.#getList).reduce(
+      (acc, [name, { price }]) => acc + price,
       0,
     );
-    return this.#totalPromotionDiscount;
   }
 
   #calcTotalPriceBeforeMembership() {
-    const buyPrice = this.#buyList.reduce(
-      (acc, { quantity, price }) => acc + quantity * price,
-      0,
+    return Array.from(this.#buyList).reduce(
+      (
+        [totalCount, totalPrice],
+        [_, { quantity, price }],
+      ) => [totalCount + quantity, totalPrice + price],
+      [0, 0],
     );
-    this.#totalPriceBefore = buyPrice + this.#calcPromotionDiscount();
-    return this.#totalPriceBefore;
   }
 
   getBeforeMembershipDiscount() {
-    this.#calcTotalPriceBeforeMembership();
+    [this.#totalQuantity, this.#totalPriceBefore] = this.#calcTotalPriceBeforeMembership();
+    this.#totalPromotionDiscount = this.#calcPromotionDiscount();
     return this.#totalPriceBefore - this.#totalPromotionDiscount;
   }
 
@@ -56,15 +70,27 @@ class Customer {
     this.#totalPriceAfter = this.#totalPriceBefore - totalDiscount;
   }
 
+  #formatList(list) {
+    return Array.from(list)
+      .map(
+        ([_, { name, price, quantity }]) => ({ name, price: this.#formatPrice(price), quantity }),
+      );
+  }
+
   getCusomterInfos() {
     return {
-      buyList: this.#buyList,
-      getList: this.#getList,
-      totalPriceBefore: this.#totalPriceBefore,
-      totalPromotionDiscount: this.#totalPromotionDiscount,
-      totalMembershipDiscount: this.#totalMembershipDiscount,
-      totalPriceAfter: this.#totalPriceAfter,
+      buyList: this.#formatList(this.#buyList),
+      getList: this.#formatList(this.#getList),
+      totalQuantity: this.#totalQuantity,
+      totalPriceBefore: this.#formatPrice(this.#totalPriceBefore),
+      totalPromotionDiscount: `-${this.#formatPrice(this.#totalPromotionDiscount)}`,
+      totalMembershipDiscount: `-${this.#formatPrice(this.#totalMembershipDiscount)}`,
+      totalPriceAfter: this.#formatPrice(this.#totalPriceAfter),
     };
+  }
+
+  #formatPrice(price) {
+    return price.toLocaleString();
   }
 }
 

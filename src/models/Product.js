@@ -55,8 +55,8 @@ class Product {
       freeCount,
       extraCount,
     } = this.#promotion.calcMaxFreeQuantity(sellableQuantity);
-    customer.addBuyList({ name: this.#name, quantity: costCount, price: this.#price });
-    customer.addGetList({ name: this.#name, quantity: freeCount, price: this.#price });
+    customer.addBuyList({ name: this.#name, quantity: costCount + freeCount, price: this.#price });
+    if (freeCount) customer.addGetList({ name: this.#name, quantity: freeCount, price: this.#price });
     return { lastCount: originQuantity - (costCount + freeCount), extraCount };
   }
 
@@ -83,6 +83,7 @@ class Product {
 
   sellExtra(quantity, customer) {
     this.#quantity -= quantity;
+    customer.addBuyList({ name: this.#name, quantity, price: this.#price });
     customer.addGetList({ name: this.#name, quantity, price: this.#price });
   }
 }
