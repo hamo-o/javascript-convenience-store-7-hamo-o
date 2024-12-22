@@ -22,5 +22,9 @@ class ConvenienceStore {
       return new Product(name, Number(price), Number(quantity), formatedPromotion);
     });
   }
+
+  getStockList() {
+    return this.#stockList.map((product) => product.getFormattedProduct());
+  }
 }
 export default ConvenienceStore;

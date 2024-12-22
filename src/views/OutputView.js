@@ -6,9 +6,13 @@ const OutputView = {
     OutputView.printNewLine();
   },
 
-  printProducts() {
-    OutputView.consolePrint("- 콜라 1,000원 10개 탄산2+1");
-    // ...
+  printProducts(products) {
+    products.forEach(({
+      name, price, quantity, promotion,
+    }) => {
+      OutputView.consolePrint(`- ${name} ${price} ${quantity} ${promotion}`);
+    });
+    OutputView.printNewLine();
   },
 
   printNewLine() {

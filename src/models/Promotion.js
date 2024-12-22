@@ -16,6 +16,10 @@ class Promotion {
     this.#startDate = startDate;
     this.#endDate = endDate;
   }
+
+  getName() {
+    return this.#name;
+  }
 }
 
 export default Promotion;

@@ -28,6 +28,7 @@ class Controller {
   async showList() {
     await this.#prepare();
     OutputView.printWelcome();
+    OutputView.printProducts(this.#convenienceStore.getStockList());
   }
 }
 
