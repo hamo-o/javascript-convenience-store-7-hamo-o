@@ -1,3 +1,6 @@
+import errorMessage from "../constants/errorMessage.js";
+import ValidationError from "../error/ValidationError.js";
+
 class MembershipDiscount {
   #DISCOUNT_RATE = 0.3;
 
@@ -27,7 +30,7 @@ class MembershipDiscount {
   }
 
   #validateResponse(response) {
-    if (!/[YN]/.test(response)) throw new Error("[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.");
+    if (!/[YN]/.test(response)) throw new ValidationError(errorMessage.INVALID_INPUT);
     return response;
   }
 }

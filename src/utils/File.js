@@ -1,5 +1,7 @@
 import path from "path";
 import fs from "node:fs/promises";
+import ValidationError from "../error/ValidationError.js";
+import errorMessage from "../constants/errorMessage.js";
 
 class File {
   #filename;
@@ -21,7 +23,7 @@ class File {
       this.#header = header;
       return { header, body };
     } catch (error) {
-      throw new Error();
+      throw new ValidationError(errorMessage.INVALID_INPUT);
     }
   }
 
@@ -29,7 +31,7 @@ class File {
     try {
       await fs.writeFile(this.#filePath, `${this.#header}\n${content}`);
     } catch (error) {
-      throw new Error();
+      throw new ValidationError(errorMessage.INVALID_INPUT);
     }
   }
 }

@@ -100,10 +100,14 @@ class Controller {
   }
 
   async restart() {
-    const data = await InputView.readRepeat();
-    OutputView.printNewLine();
-    if (data === "Y") return true;
-    return false;
+    try {
+      const result = await this.#convenienceStore.restart(InputView.readRepeat);
+      OutputView.printNewLine();
+      return result;
+    } catch (error) {
+      OutputView.consolePrint(error.message);
+      await this.restart();
+    }
   }
 }
 
