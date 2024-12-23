@@ -95,7 +95,7 @@ const run = async ({
 
 const INPUTS_TO_TERMINATE = ["[비타민워터-1]", "N", "N"];
 
-describe.skip("편의점", () => {
+describe("편의점", () => {
   afterEach(() => {
     jest.clearAllMocks();
     jest.restoreAllMocks();
@@ -135,7 +135,7 @@ describe.skip("편의점", () => {
     });
   });
 
-  test("기간에 해당하지 않는 프로모션 적용", async () => {
+  test.skip("기간에 해당하지 않는 프로모션 적용", async () => {
     mockNowDate("2024-02-01");
 
     await run({

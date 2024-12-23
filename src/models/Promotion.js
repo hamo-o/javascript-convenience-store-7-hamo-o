@@ -37,15 +37,24 @@ class Promotion {
     return { costCount, freeCount, extraCount };
   }
 
-  calcMaxFreeQuantity(quantity) {
-    if (!this.#isInPromotionDate()) return this.#getMaxFreeQuantity(0, 0, 0);
-
+  #calcMaxFreeQuantity(quantity) {
     const set = this.#buy + this.#get;
     const setCount = Math.floor(quantity / set);
-    const cost = setCount * this.#buy || this.#buy;
+    const cost = setCount * this.#buy;
     const free = setCount * this.#get;
     const last = quantity % set;
     return this.#getMaxFreeQuantity(cost, free, this.#getExtraFreeQuantity(last));
+  }
+
+  calcMaxFreeQuantity(quantity) {
+    if (!this.#isInPromotionDate()) return this.#getMaxFreeQuantity(0, 0, 0);
+
+    if (quantity === 1) {
+      if (this.#buy === 1) return this.#getMaxFreeQuantity(1, 1, 0);
+      if (this.#buy === 2) return this.#getMaxFreeQuantity(1, 0, 0);
+    }
+
+    return this.#calcMaxFreeQuantity(quantity);
   }
 }
 

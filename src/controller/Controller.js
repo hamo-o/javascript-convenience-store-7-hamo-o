@@ -38,28 +38,47 @@ class Controller {
   }
 
   async #buyDefaultProduct(name, quantity) {
-    const data = await InputView.readDefaultProduct(name, quantity);
-    OutputView.printNewLine();
-    return data;
+    try {
+      const data = await InputView.readDefaultProduct(name, quantity);
+      OutputView.printNewLine();
+      return data;
+    } catch (error) {
+      OutputView.consolePrint(error.message);
+      await this.#buyDefaultProduct(name, quantity);
+    }
   }
 
   async #getExtraProduct(name, quantity) {
-    const data = await InputView.readExtraProduct(name, quantity);
-    OutputView.printNewLine();
-    return data;
+    try {
+      const data = await InputView.readExtraProduct(name, quantity);
+      OutputView.printNewLine();
+      return data;
+    } catch (error) {
+      OutputView.consolePrint(error.message);
+      await this.#getExtraProduct(name, quantity);
+    }
   }
 
   async buy() {
-    const itemData = await InputView.readItem();
-    OutputView.printNewLine();
-    await this.#convenienceStore
-      .buyProducts(itemData, this.#buyDefaultProduct, this.#getExtraProduct);
+    try {
+      const itemData = await InputView.readItem();
+      OutputView.printNewLine();
+      await this.#convenienceStore.buyProducts(itemData, this.#buyDefaultProduct, this.#getExtraProduct);
+    } catch (error) {
+      OutputView.consolePrint(error.message);
+      await this.buy();
+    }
   }
 
   async #getMembership() {
-    const data = await InputView.readMembership();
-    OutputView.printNewLine();
-    return data;
+    try {
+      const data = await InputView.readMembership();
+      OutputView.printNewLine();
+      return data;
+    } catch (error) {
+      OutputView.consolePrint(error.message);
+      await this.#getMembership();
+    }
   }
 
   async membershipDiscount() {
@@ -71,6 +90,13 @@ class Controller {
 
   printReceipt() {
     OutputView.printReceipt(this.#customer.getCusomterInfos());
+  }
+
+  async update() {
+    await InputView.fileInput(
+      this.#productsFile,
+      this.#convenienceStore.getNewContent(),
+    );
   }
 
   async restart() {

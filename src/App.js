@@ -12,6 +12,7 @@ class App {
     await this.#controller.buy();
     await this.#controller.membershipDiscount();
     this.#controller.printReceipt();
+    await this.#controller.update();
     const flag = await this.#controller.restart();
     if (flag) this.run();
   }

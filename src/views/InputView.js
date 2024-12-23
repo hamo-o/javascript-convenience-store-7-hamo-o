@@ -31,7 +31,11 @@ const InputView = {
     return input;
   },
 
-  async fileInput(file) {
+  async fileInput(file, content) {
+    if (content) {
+      const data = await file.writeFile(content);
+      return data;
+    }
     const data = await file.readFile(InputView.formatInput);
     return data;
   },

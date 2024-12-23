@@ -86,6 +86,10 @@ class Product {
     customer.addBuyList({ name: this.#name, quantity, price: this.#price });
     customer.addGetList({ name: this.#name, quantity, price: this.#price });
   }
+
+  getContent() {
+    return `${this.#name},${this.#price},${this.#quantity},${this.#promotion?.getName() || "null"}`;
+  }
 }
 
 export default Product;

@@ -92,5 +92,11 @@ class ConvenienceStore {
     if (!/[YN]/.test(response)) throw new Error("[ERROR] 잘못된 입력입니다. 다시 입력해 주세요.");
     return response;
   }
+
+  getNewContent() {
+    return Array.from(this.#stockList).map(([name, stock]) => Array.from(stock)
+      .map(([tag, product]) => product.getContent()))
+      .flat().join("\n");
+  }
 }
 export default ConvenienceStore;
