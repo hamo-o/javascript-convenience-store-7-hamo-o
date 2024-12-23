@@ -21,6 +21,11 @@ const InputView = {
     return input;
   },
 
+  async readRepeat() {
+    const input = await InputView.consoleInput("감사합니다. 구매하고 싶은 다른 상품이 있나요? (Y/N)\n");
+    return input;
+  },
+
   async consoleInput(message) {
     const input = await MissionUtils.Console.readLineAsync(message);
     return input;

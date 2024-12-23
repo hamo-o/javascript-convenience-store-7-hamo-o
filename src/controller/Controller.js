@@ -72,6 +72,13 @@ class Controller {
   printReceipt() {
     OutputView.printReceipt(this.#customer.getCusomterInfos());
   }
+
+  async restart() {
+    const data = await InputView.readRepeat();
+    OutputView.printNewLine();
+    if (data === "Y") return true;
+    return false;
+  }
 }
 
 export default Controller;
