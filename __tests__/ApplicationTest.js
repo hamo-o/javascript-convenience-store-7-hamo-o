@@ -135,7 +135,7 @@ describe("편의점", () => {
     });
   });
 
-  test.skip("기간에 해당하지 않는 프로모션 적용", async () => {
+  test("기간에 해당하지 않는 프로모션 적용", async () => {
     mockNowDate("2024-02-01");
 
     await run({

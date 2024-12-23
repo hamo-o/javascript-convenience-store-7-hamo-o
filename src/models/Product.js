@@ -50,11 +50,12 @@ class Product {
   }
 
   #sellPromotionProduct(customer, sellableQuantity, originQuantity) {
-    const {
-      costCount,
-      freeCount,
-      extraCount,
-    } = this.#promotion.calcMaxFreeQuantity(sellableQuantity);
+    const countInfo = this.#promotion.calcMaxFreeQuantity(sellableQuantity);
+    if (!countInfo) {
+      this.sellDefault(sellableQuantity, customer);
+      return { lastCount: 0, extraCount: 0 };
+    }
+    const { costCount, freeCount, extraCount } = countInfo;
     customer.addBuyList({ name: this.#name, quantity: costCount + freeCount, price: this.#price });
     if (freeCount) customer.addGetList({ name: this.#name, quantity: freeCount, price: this.#price });
     return { lastCount: originQuantity - (costCount + freeCount), extraCount };

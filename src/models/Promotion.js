@@ -47,11 +47,11 @@ class Promotion {
   }
 
   calcMaxFreeQuantity(quantity) {
-    if (!this.#isInPromotionDate()) return this.#getMaxFreeQuantity(0, 0, 0);
+    if (!this.#isInPromotionDate()) return null;
 
     if (quantity === 1) {
       if (this.#buy === 1) return this.#getMaxFreeQuantity(1, 1, 0);
-      if (this.#buy === 2) return this.#getMaxFreeQuantity(1, 0, 0);
+      if (this.#buy === 2) return null;
     }
 
     return this.#calcMaxFreeQuantity(quantity);
